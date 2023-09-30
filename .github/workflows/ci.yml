@@ -46,9 +46,10 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.DEV }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           envs: GITHUB_USERNAME, GITHUB_TOKEN
           script: |
             cd TheOasis_Portal
+            npm install
             git pull
             npm run start:dev
