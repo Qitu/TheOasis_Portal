@@ -28,9 +28,6 @@ jobs:
         with:
           version: 7.0.0
 
-      - name: create pnpm-lock.yaml (创建 pnpm-lock.yaml)
-        run: pnpm install --frozen-lockfile --ignore-scripts
-
       - name: Get pnpm store directory (获取 pnpm store 目录)
         id: pnpm-cache
         shell: bash
