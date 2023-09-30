@@ -23,24 +23,24 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install pnpm (安装 pnpm)
-        uses: pnpm/action-setup@v2
+      - name: Install npm (安装 npm)
+        uses: npm/action-setup@v2
         with:
           version: 7.0.0
 
       - name: Install dependencies (安装依赖)
-        run: pnpm install
+        run: n install
 
       - name: lint (代码检查)
-        run: pnpm run lint
+        run: npm run lint
 
       # en: The template does not contain test cases. If you need to use test cases, you can uncomment it
       # zh: 初始化模板中不包含测试用例，如需使用测试用例，可取消注释
       # - name: Test (测试)
-      #   run: pnpm run test
+      #   run: npm run test
 
       - name: Build (构建)
-        run: pnpm run build
+        run: npm run build
 
       - name: Upload build artifacts (上传构建产物)
         uses: actions/upload-artifact@v3
