@@ -1,46 +1,30 @@
-name: Node Github CI
+name: Node CI
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
+
+permissions:
+  contents: read
 
 jobs:
-  test:
-
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [16.x]
-
+        node_version: [16.x, 14.x]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install and test
-      run: |
-        npm install
-        npm test
-      env:
-        CI: true
-
-  deploy:
-    needs: [test]
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: SSH and deploy node app
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.SSH_PORT }}
-        script: |
-          cd ~/TheOasis_Portal
-          git pull origin master
-          npm install
-          npm run start:dev
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node_version }}
+      - run: echo ${{github.ref}}
+      - run: npm install
+      - run: yarn run lint
+      - run: yarn run tsc
+      - run: yarn run build
+        env:
+          CI: true
+          PROGRESS: none
+          NODE_ENV: test
+          NODE_OPTIONS: --max_old_space_size=4096
