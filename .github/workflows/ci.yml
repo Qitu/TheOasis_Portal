@@ -23,24 +23,41 @@ jobs:
         with:
           node-version: 16
 
-      - name: Install npm (安装 npm)
-        uses: npm/action-setup@v2
+      - name: Install pnpm (安装 pnpm)
+        uses: pnpm/action-setup@v2
         with:
           version: 7.0.0
 
+      - name: create pnpm-lock.yaml (创建 pnpm-lock.yaml)
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Get pnpm store directory (获取 pnpm store 目录)
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache (设置 pnpm 缓存)
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies (安装依赖)
-        run: n install
+        run: pnpm install
 
       - name: lint (代码检查)
-        run: npm run lint
+        run: pnpm run lint
 
       # en: The template does not contain test cases. If you need to use test cases, you can uncomment it
       # zh: 初始化模板中不包含测试用例，如需使用测试用例，可取消注释
       # - name: Test (测试)
-      #   run: npm run test
+      #   run: pnpm run test
 
       - name: Build (构建)
-        run: npm run build
+        run: pnpm run build
 
       - name: Upload build artifacts (上传构建产物)
         uses: actions/upload-artifact@v3
