@@ -4,9 +4,9 @@ name: CI
 # zh: Event 设置为 master 分支的 pull request 事件和 push 事件
 on:
   push:
-    branches: [main, qitu/dev]
-  pull_request:
-    branches: [main, qitu/dev]
+    branches: [main]
+  # pull_request:
+  #   branches: [main]
 
 permissions:
   contents: write
@@ -15,18 +15,18 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code (检出代码)
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js (设置 node 版本)
+      - name: Setup Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: 16
 
-      - name: Install dependencies (安装依赖)
+      - name: Install dependencies
         run: npm install
 
-      - name: lint (代码检查)
+      - name: Lint check
         run: npm run lint
 
       # en: The template does not contain test cases. If you need to use test cases, you can uncomment it
@@ -34,10 +34,13 @@ jobs:
       # - name: Test (测试)
       #   run: npm run test
 
-      - name: Build (构建)
+      - name: Project Build
         run: npm run build
 
-      - name: Deploy package to digitalocean
+  CD:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to dev server (digitalocean)
         uses: appleboy/ssh-action@master
         env:
             GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
@@ -52,4 +55,4 @@ jobs:
             cd TheOasis_Portal
             npm install
             git pull
-            npm run start:dev
+            pm2 reload oasis
