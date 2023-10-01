@@ -52,4 +52,4 @@ jobs:
             cd TheOasis_Portal
             npm install
             git pull
-            npm run start
+            npm run start:dev
