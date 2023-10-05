@@ -85,7 +85,7 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
-  const [type, setType] = useState<string>('account');
+  const [type, setType] = useState<string>('email');
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const containerClassName = useEmotionCss(() => {
@@ -120,8 +120,8 @@ const Login: React.FC = () => {
       const msg = await login({ ...values, type });
       if (msg.status === 'ok') {
         const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
+          id: 'xxx',
+          defaultMessage: 'Login Successful!',
         });
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
@@ -134,8 +134,8 @@ const Login: React.FC = () => {
       setUserLoginState(msg);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
+        id: 'xxx',
+        defaultMessage: 'Login failed, please try again!',
       });
       console.log(error);
       message.error(defaultLoginFailureMessage);
@@ -148,13 +148,13 @@ const Login: React.FC = () => {
       <Helmet>
         <title>
           {intl.formatMessage({
-            id: 'menu.login',
-            defaultMessage: '登录页',
+            id: 'xxx',
+            defaultMessage: 'Login Page ',
           })}
           - {Settings.title}
         </title>
       </Helmet>
-      <Lang />
+      {/*<Lang />*/}
       <div
         style={{
           flex: '1',
@@ -163,26 +163,27 @@ const Login: React.FC = () => {
       >
         <LoginForm
           contentStyle={{
-            minWidth: 280,
+            minWidth: 480,
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Ant Design"
-          subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
+          title="Oasis: MetaHuman Platform"
+          subTitle=''
           initialValues={{
             autoLogin: true,
           }}
-          actions={[
-            <FormattedMessage
-              key="loginWith"
-              id="pages.login.loginWith"
-              defaultMessage="其他登录方式"
-            />,
-            <ActionIcons key="icons" />,
-          ]}
+          // actions={[
+          //   <FormattedMessage
+          //     key="loginWith"
+          //     id="xxx"
+          //     defaultMessage="Other Login Methods"
+          //   />,
+          //   <ActionIcons key="icons" />,
+          // ]}
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}
+          submitter={{ searchConfig: { submitText: 'Login'}}}
         >
           <Tabs
             activeKey={type}
@@ -197,10 +198,10 @@ const Login: React.FC = () => {
                 }),
               },
               {
-                key: 'mobile',
+                key: 'email',
                 label: intl.formatMessage({
-                  id: 'pages.login.phoneLogin.tab',
-                  defaultMessage: '手机号登录',
+                  id: 'xxx',
+                  defaultMessage: 'Login via NUS Email',
                 }),
               },
             ]}
@@ -263,38 +264,38 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
-          {type === 'mobile' && (
+          {status === 'error' && loginType === 'email' && <LoginMessage content="Email Verification Code Error!" />}
+          {type === 'email' && (
             <>
               <ProFormText
                 fieldProps={{
                   size: 'large',
-                  prefix: <MobileOutlined />,
+                  prefix: <UserOutlined />,
                 }}
-                name="mobile"
+                name="email"
                 placeholder={intl.formatMessage({
-                  id: 'pages.login.phoneNumber.placeholder',
-                  defaultMessage: '手机号',
+                  id: 'xxx',
+                  defaultMessage: 'NUS Email Address',
                 })}
                 rules={[
                   {
                     required: true,
                     message: (
                       <FormattedMessage
-                        id="pages.login.phoneNumber.required"
-                        defaultMessage="请输入手机号！"
+                        id="xxx"
+                        defaultMessage="Please input your NUS email address!"
                       />
                     ),
                   },
-                  {
-                    pattern: /^1\d{10}$/,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.phoneNumber.invalid"
-                        defaultMessage="手机号格式错误！"
-                      />
-                    ),
-                  },
+                  // {
+                  //   pattern: /^1\d{10}$/,
+                  //   message: (
+                  //     <FormattedMessage
+                  //       id="pages.login.phoneNumber.invalid"
+                  //       defaultMessage="手机号格式错误！"
+                  //     />
+                  //   ),
+                  // },
                 ]}
               />
               <ProFormCaptcha
@@ -306,19 +307,19 @@ const Login: React.FC = () => {
                   size: 'large',
                 }}
                 placeholder={intl.formatMessage({
-                  id: 'pages.login.captcha.placeholder',
-                  defaultMessage: '请输入验证码',
+                  id: 'xxx',
+                  defaultMessage: 'Please enter the verification code!',
                 })}
                 captchaTextRender={(timing, count) => {
                   if (timing) {
                     return `${count} ${intl.formatMessage({
-                      id: 'pages.getCaptchaSecondText',
-                      defaultMessage: '获取验证码',
+                      id: 'xxx',
+                      defaultMessage: 'Get a verification code',
                     })}`;
                   }
                   return intl.formatMessage({
-                    id: 'pages.login.phoneLogin.getVerificationCode',
-                    defaultMessage: '获取验证码',
+                    id: 'xxx',
+                    defaultMessage: 'Get a verification code',
                   });
                 }}
                 name="captcha"
@@ -327,8 +328,8 @@ const Login: React.FC = () => {
                     required: true,
                     message: (
                       <FormattedMessage
-                        id="pages.login.captcha.required"
-                        defaultMessage="请输入验证码！"
+                        id="xxx"
+                        defaultMessage="Please enter the verification code!"
                       />
                     ),
                   },
@@ -340,7 +341,7 @@ const Login: React.FC = () => {
                   if (!result) {
                     return;
                   }
-                  message.success('获取验证码成功！验证码为：1234');
+                  message.success('Successfully get the verification code!');
                 }}
               />
             </>
@@ -351,19 +352,19 @@ const Login: React.FC = () => {
             }}
           >
             <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
+              <FormattedMessage id="xxx" defaultMessage="Auto-login" />
             </ProFormCheckbox>
             <a
               style={{
                 float: 'right',
               }}
             >
-              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+              <FormattedMessage id="xxx" defaultMessage="Forgotten Password?" />
             </a>
           </div>
         </LoginForm>
       </div>
-      <Footer />
+
     </div>
   );
 };
