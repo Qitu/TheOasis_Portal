@@ -9,14 +9,14 @@ const Admin: React.FC = () => {
   return (
     <PageContainer
       content={intl.formatMessage({
-        id: 'pages.admin.subPage.title',
+        id: 'xxx',
         defaultMessage: 'This page can only be viewed by admin',
       })}
     >
       <Card>
         <Alert
           message={intl.formatMessage({
-            id: 'pages.welcome.alertMessage',
+            id: 'xxx',
             defaultMessage: 'Faster and stronger heavy-duty components have been released.',
           })}
           type="success"

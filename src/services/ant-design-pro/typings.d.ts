@@ -40,6 +40,7 @@ declare namespace API {
     href?: string;
     avatar?: string;
     name?: string;
+    id?: string;
     owner?: string;
     desc?: string;
     callNo?: number;
