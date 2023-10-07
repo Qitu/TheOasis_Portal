@@ -20,7 +20,7 @@ function App() {
             console.log("Loaded.")
         });
     }, []);
-    return <Unity style={{'width': '100%', 'height': '100%'}} unityContext={unityContext} />;
+    return <Unity style={{'marginTop': '30px', 'width': '400px', 'height': '600px'}} unityContext={unityContext} />;
 }
 
 export default App;
