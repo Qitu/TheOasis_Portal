@@ -274,6 +274,7 @@ const Login: React.FC = () => {
                   prefix: <UserOutlined />,
                 }}
                 name="mobile"
+                addonAfter="@u.nus.edu"
                 placeholder={intl.formatMessage({
                   id: 'xxx',
                   defaultMessage: 'NUS Email Address',
