@@ -26,7 +26,8 @@ export default [
     path: '/welcome',
     name: 'welcome',
     icon: 'smile',
-    component: './Welcome',
+    // component: './Welcome',
+    component: './Conversation',
   },
   {
     path: '/admin',
