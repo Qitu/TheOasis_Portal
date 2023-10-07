@@ -85,7 +85,7 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
-  const [type, setType] = useState<string>('email');
+  const [type, setType] = useState<string>('mobile');
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const containerClassName = useEmotionCss(() => {
@@ -118,6 +118,7 @@ const Login: React.FC = () => {
     try {
       // 登录
       const msg = await login({ ...values, type });
+
       if (msg.status === 'ok') {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'xxx',
@@ -190,15 +191,15 @@ const Login: React.FC = () => {
             onChange={setType}
             centered
             items={[
+              // {
+              //   key: 'account',
+              //   label: intl.formatMessage({
+              //     id: 'pages.login.accountLogin.tab',
+              //     defaultMessage: '账户密码登录',
+              //   }),
+              // },
               {
-                key: 'account',
-                label: intl.formatMessage({
-                  id: 'pages.login.accountLogin.tab',
-                  defaultMessage: '账户密码登录',
-                }),
-              },
-              {
-                key: 'email',
+                key: 'mobile',
                 label: intl.formatMessage({
                   id: 'xxx',
                   defaultMessage: 'Login via NUS Email',
@@ -207,72 +208,72 @@ const Login: React.FC = () => {
             ]}
           />
 
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage
-              content={intl.formatMessage({
-                id: 'pages.login.accountLogin.errorMessage',
-                defaultMessage: '账户或密码错误(admin/ant.design)',
-              })}
-            />
-          )}
-          {type === 'account' && (
-            <>
-              <ProFormText
-                name="username"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <UserOutlined />,
-                }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
-                })}
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.username.required"
-                        defaultMessage="请输入用户名!"
-                      />
-                    ),
-                  },
-                ]}
-              />
-              <ProFormText.Password
-                name="password"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined />,
-                }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design',
-                })}
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.password.required"
-                        defaultMessage="请输入密码！"
-                      />
-                    ),
-                  },
-                ]}
-              />
-            </>
-          )}
+          {/*{status === 'error' && loginType === 'account' && (*/}
+          {/*  <LoginMessage*/}
+          {/*    content={intl.formatMessage({*/}
+          {/*      id: 'pages.login.accountLogin.errorMessage',*/}
+          {/*      defaultMessage: '账户或密码错误(admin/ant.design)',*/}
+          {/*    })}*/}
+          {/*  />*/}
+          {/*)}*/}
+          {/*{type === 'account' && (*/}
+          {/*  <>*/}
+          {/*    <ProFormText*/}
+          {/*      name="username"*/}
+          {/*      fieldProps={{*/}
+          {/*        size: 'large',*/}
+          {/*        prefix: <UserOutlined />,*/}
+          {/*      }}*/}
+          {/*      placeholder={intl.formatMessage({*/}
+          {/*        id: 'pages.login.username.placeholder',*/}
+          {/*        defaultMessage: '用户名: admin or user',*/}
+          {/*      })}*/}
+          {/*      rules={[*/}
+          {/*        {*/}
+          {/*          required: true,*/}
+          {/*          message: (*/}
+          {/*            <FormattedMessage*/}
+          {/*              id="pages.login.username.required"*/}
+          {/*              defaultMessage="请输入用户名!"*/}
+          {/*            />*/}
+          {/*          ),*/}
+          {/*        },*/}
+          {/*      ]}*/}
+          {/*    />*/}
+          {/*    <ProFormText.Password*/}
+          {/*      name="password"*/}
+          {/*      fieldProps={{*/}
+          {/*        size: 'large',*/}
+          {/*        prefix: <LockOutlined />,*/}
+          {/*      }}*/}
+          {/*      placeholder={intl.formatMessage({*/}
+          {/*        id: 'pages.login.password.placeholder',*/}
+          {/*        defaultMessage: '密码: ant.design',*/}
+          {/*      })}*/}
+          {/*      rules={[*/}
+          {/*        {*/}
+          {/*          required: true,*/}
+          {/*          message: (*/}
+          {/*            <FormattedMessage*/}
+          {/*              id="pages.login.password.required"*/}
+          {/*              defaultMessage="请输入密码！"*/}
+          {/*            />*/}
+          {/*          ),*/}
+          {/*        },*/}
+          {/*      ]}*/}
+          {/*    />*/}
+          {/*  </>*/}
+          {/*)}*/}
 
-          {status === 'error' && loginType === 'email' && <LoginMessage content="Email Verification Code Error!" />}
-          {type === 'email' && (
+          {status === 'error' && loginType === 'mobile' && <LoginMessage content="Email Verification Code Error!" />}
+          {type === 'mobile' && (
             <>
               <ProFormText
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                name="email"
+                name="mobile"
                 placeholder={intl.formatMessage({
                   id: 'xxx',
                   defaultMessage: 'NUS Email Address',
