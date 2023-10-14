@@ -3,8 +3,8 @@ import { EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Card, Col, Row } from 'antd';
-import React from 'react';
+import { Card, Col, Row, Button, Modal, Space } from 'antd';
+import React, { useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
@@ -12,8 +12,53 @@ const { Meta } = Card;
 const Admin: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const intl = useIntl();
+
+  const [isVisible, setIsVisible] = useState(false);
+  const [modalValue, setModalValue] = useState(null);
+
+  // configuration modal
+  const showModal = ({valueToPass}: { valueToPass: any }) => {
+    setModalValue(valueToPass);
+    setIsVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsVisible(false);
+  };
+
+  // operation modal
+  const showOpeartionModal = ({valueToPass}: { valueToPass: any }) => {
+    setModalValue(valueToPass);
+    setIsVisible(true);
+  };
+
+  const handleDelete = () => {
+
+  };
+
+  const handleActivate = () => {
+
+  };
+
+  const handleDeactivate = () => {
+
+  };
+
   return (
     <PageContainer>
+        <Modal
+            title="Edit Metahuman Information"
+            visible={isVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+
+        >
+            <p>{modalValue}</p>
+        </Modal>
       <Row gutter={16}>
         <Col span={8}>
           <Card
@@ -24,7 +69,9 @@ const Admin: React.FC = () => {
             cover={
               <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
             }
-            actions={[<SettingOutlined key="setting" />, <EllipsisOutlined key="ellipsis" />]}
+            actions={[<SettingOutlined key="setting"
+                                       onClick={() => showOpeartionModal({valueToPass: ''})}/>,
+                <EllipsisOutlined key="ellipsis" />]}
           >
             Card content
           </Card>
@@ -38,7 +85,9 @@ const Admin: React.FC = () => {
             cover={
               <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
             }
-            actions={[<SettingOutlined key="setting" />, <EllipsisOutlined key="ellipsis" />]}
+            actions={[<SettingOutlined key="setting"
+                                       onClick={() => showModal({valueToPass: ''})}/>,
+                <EllipsisOutlined key="ellipsis" />]}
           >
             Card content
           </Card>
@@ -52,7 +101,9 @@ const Admin: React.FC = () => {
             cover={
               <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
             }
-            actions={[<SettingOutlined key="setting" />, <EllipsisOutlined key="ellipsis" />]}
+            actions={[<SettingOutlined key="setting"
+                                       onClick={() => showModal({valueToPass: ''})}/>,
+                <EllipsisOutlined key="ellipsis" />]}
           >
             Card content
           </Card>
