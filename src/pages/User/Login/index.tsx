@@ -1,17 +1,17 @@
-import { Footer } from '@/components';
+// import { Footer } from '@/components';
 import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+// import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,
-  MobileOutlined,
+  // MobileOutlined,
   TaobaoCircleOutlined,
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
 import {
   LoginForm,
-  ProFormCaptcha,
+  // ProFormCaptcha,
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
@@ -22,6 +22,7 @@ import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({ token }) => {
     return {
@@ -85,7 +86,7 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
-  const [type, setType] = useState<string>('mobile');
+  const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const containerClassName = useEmotionCss(() => {
@@ -126,7 +127,9 @@ const Login: React.FC = () => {
         });
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
+        // if the current url have "redirect"
         const urlParams = new URL(window.location.href).searchParams;
+        // admin or user
         history.push(urlParams.get('redirect') || '/');
         return;
       }
@@ -155,7 +158,7 @@ const Login: React.FC = () => {
           - {Settings.title}
         </title>
       </Helmet>
-      {/*<Lang />*/}
+      <Lang />
       <div
         style={{
           flex: '1',
@@ -164,12 +167,12 @@ const Login: React.FC = () => {
       >
         <LoginForm
           contentStyle={{
-            minWidth: 480,
+            minWidth: 280,
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.svg" />}
-          title="Oasis: MetaHuman Platform"
-          subTitle=''
+          title="Oasis: A MetaHuman Platform"
+          subTitle=""
           initialValues={{
             autoLogin: true,
           }}
@@ -184,170 +187,164 @@ const Login: React.FC = () => {
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}
-          submitter={{ searchConfig: { submitText: 'Login'}}}
+          submitter={{ searchConfig: { submitText: 'Login' } }}
         >
           <Tabs
             activeKey={type}
             onChange={setType}
             centered
             items={[
-              // {
-              //   key: 'account',
-              //   label: intl.formatMessage({
-              //     id: 'pages.login.accountLogin.tab',
-              //     defaultMessage: '账户密码登录',
-              //   }),
-              // },
               {
-                key: 'mobile',
+                key: 'account',
                 label: intl.formatMessage({
-                  id: 'xxx',
-                  defaultMessage: 'Login via NUS Email',
+                  id: 'x',
+                  defaultMessage: 'Login via Username and Password',
                 }),
               },
+              // {
+              //   key: 'mobile',
+              //   label: intl.formatMessage({
+              //     id: 'xxx',
+              //     defaultMessage: 'Login via NUS Email',
+              //   }),
+              // },
             ]}
           />
 
-          {/*{status === 'error' && loginType === 'account' && (*/}
-          {/*  <LoginMessage*/}
-          {/*    content={intl.formatMessage({*/}
-          {/*      id: 'pages.login.accountLogin.errorMessage',*/}
-          {/*      defaultMessage: '账户或密码错误(admin/ant.design)',*/}
-          {/*    })}*/}
-          {/*  />*/}
-          {/*)}*/}
-          {/*{type === 'account' && (*/}
-          {/*  <>*/}
-          {/*    <ProFormText*/}
-          {/*      name="username"*/}
-          {/*      fieldProps={{*/}
-          {/*        size: 'large',*/}
-          {/*        prefix: <UserOutlined />,*/}
-          {/*      }}*/}
-          {/*      placeholder={intl.formatMessage({*/}
-          {/*        id: 'pages.login.username.placeholder',*/}
-          {/*        defaultMessage: '用户名: admin or user',*/}
-          {/*      })}*/}
-          {/*      rules={[*/}
-          {/*        {*/}
-          {/*          required: true,*/}
-          {/*          message: (*/}
-          {/*            <FormattedMessage*/}
-          {/*              id="pages.login.username.required"*/}
-          {/*              defaultMessage="请输入用户名!"*/}
-          {/*            />*/}
-          {/*          ),*/}
-          {/*        },*/}
-          {/*      ]}*/}
-          {/*    />*/}
-          {/*    <ProFormText.Password*/}
-          {/*      name="password"*/}
-          {/*      fieldProps={{*/}
-          {/*        size: 'large',*/}
-          {/*        prefix: <LockOutlined />,*/}
-          {/*      }}*/}
-          {/*      placeholder={intl.formatMessage({*/}
-          {/*        id: 'pages.login.password.placeholder',*/}
-          {/*        defaultMessage: '密码: ant.design',*/}
-          {/*      })}*/}
-          {/*      rules={[*/}
-          {/*        {*/}
-          {/*          required: true,*/}
-          {/*          message: (*/}
-          {/*            <FormattedMessage*/}
-          {/*              id="pages.login.password.required"*/}
-          {/*              defaultMessage="请输入密码！"*/}
-          {/*            />*/}
-          {/*          ),*/}
-          {/*        },*/}
-          {/*      ]}*/}
-          {/*    />*/}
-          {/*  </>*/}
-          {/*)}*/}
-
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="Email Verification Code Error!" />}
-          {type === 'mobile' && (
+          {status === 'error' && loginType === 'account' && (
+            <LoginMessage
+              content={intl.formatMessage({
+                id: 'x',
+                defaultMessage: 'Incorrect username or password',
+              })}
+            />
+          )}
+          {type === 'account' && (
             <>
               <ProFormText
+                name="username"
                 fieldProps={{
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                name="mobile"
-                addonAfter="@u.nus.edu"
                 placeholder={intl.formatMessage({
-                  id: 'xxx',
-                  defaultMessage: 'NUS Email Address',
+                  id: 'x',
+                  defaultMessage: 'Please enter your username',
                 })}
                 rules={[
                   {
                     required: true,
                     message: (
-                      <FormattedMessage
-                        id="xxx"
-                        defaultMessage="Please input your NUS email address!"
-                      />
+                      <FormattedMessage id="x" defaultMessage="Please enter your username!" />
                     ),
                   },
-                  // {
-                  //   pattern: /^1\d{10}$/,
-                  //   message: (
-                  //     <FormattedMessage
-                  //       id="pages.login.phoneNumber.invalid"
-                  //       defaultMessage="手机号格式错误！"
-                  //     />
-                  //   ),
-                  // },
                 ]}
               />
-              <ProFormCaptcha
+              <ProFormText.Password
+                name="password"
                 fieldProps={{
                   size: 'large',
                   prefix: <LockOutlined />,
                 }}
-                captchaProps={{
-                  size: 'large',
-                }}
                 placeholder={intl.formatMessage({
-                  id: 'xxx',
-                  defaultMessage: 'Please enter the verification code!',
+                  id: 'x',
+                  defaultMessage: 'Please enter your password',
                 })}
-                captchaTextRender={(timing, count) => {
-                  if (timing) {
-                    return `${count} ${intl.formatMessage({
-                      id: 'xxx',
-                      defaultMessage: 'Get a verification code',
-                    })}`;
-                  }
-                  return intl.formatMessage({
-                    id: 'xxx',
-                    defaultMessage: 'Get a verification code',
-                  });
-                }}
-                name="captcha"
                 rules={[
                   {
                     required: true,
                     message: (
-                      <FormattedMessage
-                        id="xxx"
-                        defaultMessage="Please enter the verification code!"
-                      />
+                      <FormattedMessage id="x" defaultMessage="Please enter your password!" />
                     ),
                   },
                 ]}
-                onGetCaptcha={async (phone) => {
-                  const result = await getFakeCaptcha({
-                    phone,
-                  });
-                  if (!result) {
-                    return;
-                  }
-                  message.success('Successfully get the verification code!');
-                }}
               />
             </>
           )}
+
+          {/*{status === 'error' && loginType === 'mobile' && <LoginMessage content="Email Verification Code Error!" />}*/}
+          {/*{type === 'mobile' && (*/}
+          {/*  <>*/}
+          {/*    <ProFormText*/}
+          {/*      fieldProps={{*/}
+          {/*        size: 'large',*/}
+          {/*        prefix: <UserOutlined />,*/}
+          {/*      }}*/}
+          {/*      name="mobile"*/}
+          {/*      addonAfter="@u.nus.edu"*/}
+          {/*      placeholder={intl.formatMessage({*/}
+          {/*        id: 'xxx',*/}
+          {/*        defaultMessage: 'NUS Email Address',*/}
+          {/*      })}*/}
+          {/*      rules={[*/}
+          {/*        {*/}
+          {/*          required: true,*/}
+          {/*          message: (*/}
+          {/*            <FormattedMessage*/}
+          {/*              id="xxx"*/}
+          {/*              defaultMessage="Please input your NUS email address!"*/}
+          {/*            />*/}
+          {/*          ),*/}
+          {/*        },*/}
+          {/*        // {*/}
+          {/*        //   pattern: /^1\d{10}$/,*/}
+          {/*        //   message: (*/}
+          {/*        //     <FormattedMessage*/}
+          {/*        //       id="pages.login.phoneNumber.invalid"*/}
+          {/*        //       defaultMessage="手机号格式错误！"*/}
+          {/*        //     />*/}
+          {/*        //   ),*/}
+          {/*        // },*/}
+          {/*      ]}*/}
+          {/*    />*/}
+          {/*    <ProFormCaptcha*/}
+          {/*      fieldProps={{*/}
+          {/*        size: 'large',*/}
+          {/*        prefix: <LockOutlined />,*/}
+          {/*      }}*/}
+          {/*      captchaProps={{*/}
+          {/*        size: 'large',*/}
+          {/*      }}*/}
+          {/*      placeholder={intl.formatMessage({*/}
+          {/*        id: 'xxx',*/}
+          {/*        defaultMessage: 'Please enter the verification code!',*/}
+          {/*      })}*/}
+          {/*      captchaTextRender={(timing, count) => {*/}
+          {/*        if (timing) {*/}
+          {/*          return `${count} ${intl.formatMessage({*/}
+          {/*            id: 'xxx',*/}
+          {/*            defaultMessage: 'Get a verification code',*/}
+          {/*          })}`;*/}
+          {/*        }*/}
+          {/*        return intl.formatMessage({*/}
+          {/*          id: 'xxx',*/}
+          {/*          defaultMessage: 'Get a verification code',*/}
+          {/*        });*/}
+          {/*      }}*/}
+          {/*      name="captcha"*/}
+          {/*      rules={[*/}
+          {/*        {*/}
+          {/*          required: true,*/}
+          {/*          message: (*/}
+          {/*            <FormattedMessage*/}
+          {/*              id="xxx"*/}
+          {/*              defaultMessage="Please enter the verification code!"*/}
+          {/*            />*/}
+          {/*          ),*/}
+          {/*        },*/}
+          {/*      ]}*/}
+          {/*      onGetCaptcha={async (phone) => {*/}
+          {/*        const result = await getFakeCaptcha({*/}
+          {/*          phone,*/}
+          {/*        });*/}
+          {/*        if (!result) {*/}
+          {/*          return;*/}
+          {/*        }*/}
+          {/*        message.success('Successfully get the verification code!');*/}
+          {/*      }}*/}
+          {/*    />*/}
+          {/*  </>*/}
+          {/*)}*/}
           <div
             style={{
               marginBottom: 24,
@@ -366,7 +363,6 @@ const Login: React.FC = () => {
           </div>
         </LoginForm>
       </div>
-
     </div>
   );
 };
