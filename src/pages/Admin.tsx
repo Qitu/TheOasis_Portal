@@ -36,18 +36,6 @@ const Admin: React.FC = () => {
     setIsVisible(true);
   };
 
-  const handleDelete = () => {
-
-  };
-
-  const handleActivate = () => {
-
-  };
-
-  const handleDeactivate = () => {
-
-  };
-
   return (
     <PageContainer>
         <Modal
