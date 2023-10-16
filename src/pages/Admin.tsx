@@ -13,20 +13,19 @@ const { Meta } = Card;
 const Admin: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const intl = useIntl();
+  const [cards, setCards] = useState([] as { id: number; name: string; description: string; image: string }[]);
 
-    const [cards, setCards] = useState([] as { id: number; name: string; description: string; image: string }[]);
-
-    useEffect(() => {
-        // get Metahuman card data from back-end and update the status
-        // this is fake data
-        const fakeData = [
-            { id:1, name: 'Card 1', description: 'Content for card 1', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
-            { id:2, name: 'Card 2', description: 'Content for card 2', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
-            { id:3, name: 'Card 3', description: 'Content for card 3', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
-            { id:4, name: 'Card 4', description: 'Content for card 4', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
-        ];
-        setCards(fakeData);
-    }, []);
+  useEffect(() => {
+      // get Metahuman card data from back-end and update the status
+      // this is fake data
+      const fakeData = [
+          { id:1, name: 'Card 1', description: 'Content for card 1', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
+          { id:2, name: 'Card 2', description: 'Content for card 2', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
+          { id:3, name: 'Card 3', description: 'Content for card 3', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
+          { id:4, name: 'Card 4', description: 'Content for card 4', image: "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" },
+      ];
+      setCards(fakeData);
+  }, []);
 
   return (
     <PageContainer>

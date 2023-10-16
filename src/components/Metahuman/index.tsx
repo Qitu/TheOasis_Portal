@@ -6,7 +6,8 @@ import { history } from '@umijs/max';
 const Metahuman: React.FC<{ id: number, name: string, description: string, image: string }> = ({id, name, description, image}) => {
 
     const goToCardConfigPage = () => {
-        history.push(`/character-details/${id}`)
+        history.push('/character-details/${id}',
+            {id: id, name: name, description: description, image: image})
     };
 
     return (
