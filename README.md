@@ -22,11 +22,6 @@ The Oiasis of Metahuman
     <a href="https://github.com/Qitu/TheOasis_Portal/issues">Admin panel</a>
   </p>
 
-</p>
-
-
-
- 
 ## Content
 
 - [Installation](#Installation)
@@ -44,8 +39,6 @@ The Oiasis of Metahuman
 
 ### Installation
 
-
-
 ###### 开发前的配置要求
 
 1. xxxxx x.x.x
@@ -61,10 +54,11 @@ git clone https://github.com/Qitu/TheOasis_Portal.git
 ```
 
 ### 文件目录说明
+
 eg:
 
 ```
-filetree 
+filetree
 ├── ARCHITECTURE.md
 ├── LICENSE.txt
 ├── README.md
@@ -83,11 +77,7 @@ filetree
 
 ```
 
-
-
-
-
-### 开发的架构 
+### 开发的架构
 
 请阅读[ARCHITECTURE.md](https://github.com/Qitu/TheOasis_Portal/blob/master/ARCHITECTURE.md) 查阅为该项目的架构。
 
@@ -109,29 +99,25 @@ filetree
 
 贡献使开源社区成为一个学习、激励和创造的绝佳场所。你所作的任何贡献都是**非常感谢**的。
 
-
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 ### 版本控制
 
-该项目使用Git进行版本管理。您可以在repository参看当前可用版本。
+该项目使用 Git 进行版本管理。您可以在 repository 参看当前可用版本。
 
 ### 作者
 
 xxx@xxxx
 
-知乎:xxxx  &ensp; qq:xxxxxx    
+知乎:xxxx &ensp; qq:xxxxxx
 
- *您也可以在贡献者名单中参看所有参与该项目的开发者。*
+_您也可以在贡献者名单中参看所有参与该项目的开发者。_
 
 ### 鸣谢
-
 
 - [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 - [Img Shields](https://shields.io)
@@ -141,7 +127,8 @@ xxx@xxxx
 - [xxxxxxxxxxxxxx](https://connoratherton.com/loaders)
 
 <!-- links -->
-[your-project-path]:Qitu/TheOasis_Portal
+
+[your-project-path]: Qitu/TheOasis_Portal
 [contributors-shield]: https://img.shields.io/github/contributors/Qitu/TheOasis_Portal.svg?style=flat-square
 [contributors-url]: https://github.com/Qitu/TheOasis_Portal/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Qitu/TheOasis_Portal.svg?style=flat-square
@@ -154,6 +141,3 @@ xxx@xxxx
 [license-url]: https://github.com/Qitu/TheOasis_Portal/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/shaojintian
-
-
-

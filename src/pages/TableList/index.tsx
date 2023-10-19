@@ -11,7 +11,8 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
-import { Button, Drawer, Input, message } from 'antd';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
@@ -109,12 +110,7 @@ const TableList: React.FC = () => {
 
   const columns: ProColumns<API.RuleListItem>[] = [
     {
-      title: (
-        <FormattedMessage
-          id="xxx"
-          defaultMessage="ID"
-        />
-      ),
+      title: <FormattedMessage id="xxx" defaultMessage="ID" />,
       dataIndex: 'name',
       tip: 'The ID is the unique key',
       render: (dom, entity) => {
@@ -130,17 +126,12 @@ const TableList: React.FC = () => {
         );
       },
     },
-      {
-          title: (
-              <FormattedMessage
-                  id="xxx"
-                  defaultMessage="Name"
-              />
-          ),
-          dataIndex: 'id',
-        ellipsis: true,
-        width: 80,
-      },
+    {
+      title: <FormattedMessage id="xxx" defaultMessage="Name" />,
+      dataIndex: 'id',
+      ellipsis: true,
+      width: 80,
+    },
     {
       title: <FormattedMessage id="x" defaultMessage="Description" />,
       dataIndex: 'desc',
@@ -149,12 +140,7 @@ const TableList: React.FC = () => {
       width: 80,
     },
     {
-      title: (
-        <FormattedMessage
-          id="x"
-          defaultMessage="Background"
-        />
-      ),
+      title: <FormattedMessage id="x" defaultMessage="Background" />,
       dataIndex: 'callNo',
       // sorter: true,
       // hideInForm: true,
@@ -170,38 +156,25 @@ const TableList: React.FC = () => {
       hideInForm: true,
       valueEnum: {
         0: {
-          text: (
-            <FormattedMessage id="x" defaultMessage="Shut down" />
-          ),
+          text: <FormattedMessage id="x" defaultMessage="Shut down" />,
           status: 'Default',
         },
         1: {
-          text: (
-            <FormattedMessage id="x" defaultMessage="Running" />
-          ),
+          text: <FormattedMessage id="x" defaultMessage="Running" />,
           status: 'Processing',
         },
         2: {
-          text: (
-            <FormattedMessage id="x" defaultMessage="Online" />
-          ),
+          text: <FormattedMessage id="x" defaultMessage="Online" />,
           status: 'Success',
         },
         3: {
-          text: (
-            <FormattedMessage id="x" defaultMessage="Abnormal" />
-          ),
+          text: <FormattedMessage id="x" defaultMessage="Abnormal" />,
           status: 'Error',
         },
       },
     },
     {
-      title: (
-        <FormattedMessage
-          id="x"
-          defaultMessage="Motivation"
-        />
-      ),
+      title: <FormattedMessage id="x" defaultMessage="Motivation" />,
       // sorter: true,
       dataIndex: 'updatedAt',
       // valueType: 'dateTime',
@@ -239,7 +212,7 @@ const TableList: React.FC = () => {
         >
           <FormattedMessage id="x" defaultMessage="Configuration" />
         </a>,
-        <a key="subscribeAlert" >
+        <a key="subscribeAlert">
           <FormattedMessage id="x" defaultMessage="Activate" />
         </a>,
       ],
@@ -257,12 +230,11 @@ const TableList: React.FC = () => {
         rowKey="key"
         search={{
           labelWidth: 120,
-          searchText: "Search",
-          resetText: "Reset",
-          collapseRender:()=>false,
-          collapsed: false
+          searchText: 'Search',
+          resetText: 'Reset',
+          collapseRender: () => false,
+          collapsed: false,
         }}
-
         toolBarRender={() => [
           <Button
             type="primary"
@@ -310,10 +282,7 @@ const TableList: React.FC = () => {
             danger
             type="primary"
           >
-            <FormattedMessage
-              id="x"
-              defaultMessage="Batch deletion"
-            />
+            <FormattedMessage id="x" defaultMessage="Batch deletion" />
           </Button>
         </FooterToolbar>
       )}
@@ -324,10 +293,10 @@ const TableList: React.FC = () => {
         })}
         width="400px"
         submitter={{
-            searchConfig: {
-                submitText: 'Submit',
-                resetText: 'Cancel',
-            },
+          searchConfig: {
+            submitText: 'Submit',
+            resetText: 'Cancel',
+          },
         }}
         open={createModalOpen}
         onOpenChange={handleModalOpen}
@@ -345,19 +314,14 @@ const TableList: React.FC = () => {
           rules={[
             {
               required: true,
-              message: (
-                <FormattedMessage
-                  id="x"
-                  defaultMessage="Metahuman name is required!"
-                />
-              ),
+              message: <FormattedMessage id="x" defaultMessage="Metahuman name is required!" />,
             },
           ]}
           width="md"
           name="name"
           placeholder="Please input metahuman name"
         />
-        <ProFormTextArea width="md" name="desc" placeholder="Please input metahuman description"/>
+        <ProFormTextArea width="md" name="desc" placeholder="Please input metahuman description" />
       </ModalForm>
       <UpdateForm
         onSubmit={async (value) => {
