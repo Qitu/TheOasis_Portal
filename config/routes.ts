@@ -16,7 +16,7 @@ export default [
     layout: false,
     routes: [
       {
-        name: 'login',
+        name: 'Login',
         path: '/user/login',
         component: './User/Login',
       },
@@ -24,26 +24,16 @@ export default [
   },
   {
     path: '/welcome',
-    name: 'welcome',
+    name: 'Welcome',
     icon: 'smile',
     component: './Welcome',
   },
   {
     path: '/admin',
-    name: 'admin',
+    name: 'Metahuman Configuration',
     icon: 'crown',
     access: 'canAdmin',
-    routes: [
-      {
-        path: '/admin',
-        redirect: '/admin/sub-page',
-      },
-      {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        component: './Admin',
-      },
-    ],
+    component: './Admin',
   },
   {
     name: 'list.table-list',
@@ -53,7 +43,12 @@ export default [
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/admin',
+  },
+  {
+    name: 'Metahuman Character Details',
+    path: '/character-details/:characterID',
+    component: './MetahumanDetails',
   },
   {
     path: '*',
