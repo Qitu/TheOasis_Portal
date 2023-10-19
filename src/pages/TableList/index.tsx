@@ -22,7 +22,7 @@ import UpdateForm from './components/UpdateForm';
  * @param fields
  */
 const handleAdd = async (fields: API.RuleListItem) => {
-  const hide = message.loading('正在添加');
+  const hide = message.loading('Adding...');
   try {
     await addRule({ ...fields });
     hide();
@@ -67,7 +67,7 @@ const handleUpdate = async (fields: FormValueType) => {
  * @param selectedRows
  */
 const handleRemove = async (selectedRows: API.RuleListItem[]) => {
-  const hide = message.loading('正在删除');
+  const hide = message.loading('Removing...');
   if (!selectedRows) return true;
   try {
     await removeRule({
@@ -111,12 +111,12 @@ const TableList: React.FC = () => {
     {
       title: (
         <FormattedMessage
-          id="pages.searchTable.updateForm.ruleName.nameLabel"
-          defaultMessage="Rule name"
+          id="xxx"
+          defaultMessage="ID"
         />
       ),
       dataIndex: 'name',
-      tip: 'The rule name is the unique key',
+      tip: 'The ID is the unique key',
       render: (dom, entity) => {
         return (
           <a
@@ -130,59 +130,66 @@ const TableList: React.FC = () => {
         );
       },
     },
+      {
+          title: (
+              <FormattedMessage
+                  id="xxx"
+                  defaultMessage="Name"
+              />
+          ),
+          dataIndex: 'id',
+        ellipsis: true,
+        width: 80,
+      },
     {
-      title: <FormattedMessage id="pages.searchTable.titleDesc" defaultMessage="Description" />,
+      title: <FormattedMessage id="x" defaultMessage="Description" />,
       dataIndex: 'desc',
       valueType: 'textarea',
+      ellipsis: true,
+      width: 80,
     },
     {
       title: (
         <FormattedMessage
-          id="pages.searchTable.titleCallNo"
-          defaultMessage="Number of service calls"
+          id="x"
+          defaultMessage="Background"
         />
       ),
       dataIndex: 'callNo',
-      sorter: true,
-      hideInForm: true,
-      renderText: (val: string) =>
-        `${val}${intl.formatMessage({
-          id: 'pages.searchTable.tenThousand',
-          defaultMessage: ' 万 ',
-        })}`,
+      // sorter: true,
+      // hideInForm: true,
+      // renderText: (val: string) =>
+      //   `${val}${intl.formatMessage({
+      //     id: 'x',
+      //     defaultMessage: ' 万 ',
+      //   })}`,
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleStatus" defaultMessage="Status" />,
+      title: <FormattedMessage id="x" defaultMessage="Status" />,
       dataIndex: 'status',
       hideInForm: true,
       valueEnum: {
         0: {
           text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.default"
-              defaultMessage="Shut down"
-            />
+            <FormattedMessage id="x" defaultMessage="Shut down" />
           ),
           status: 'Default',
         },
         1: {
           text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.running" defaultMessage="Running" />
+            <FormattedMessage id="x" defaultMessage="Running" />
           ),
           status: 'Processing',
         },
         2: {
           text: (
-            <FormattedMessage id="pages.searchTable.nameStatus.online" defaultMessage="Online" />
+            <FormattedMessage id="x" defaultMessage="Online" />
           ),
           status: 'Success',
         },
         3: {
           text: (
-            <FormattedMessage
-              id="pages.searchTable.nameStatus.abnormal"
-              defaultMessage="Abnormal"
-            />
+            <FormattedMessage id="x" defaultMessage="Abnormal" />
           ),
           status: 'Error',
         },
@@ -191,34 +198,35 @@ const TableList: React.FC = () => {
     {
       title: (
         <FormattedMessage
-          id="pages.searchTable.titleUpdatedAt"
-          defaultMessage="Last scheduled time"
+          id="x"
+          defaultMessage="Motivation"
         />
       ),
-      sorter: true,
+      // sorter: true,
       dataIndex: 'updatedAt',
-      valueType: 'dateTime',
-      renderFormItem: (item, { defaultRender, ...rest }, form) => {
-        const status = form.getFieldValue('status');
-        if (`${status}` === '0') {
-          return false;
-        }
-        if (`${status}` === '3') {
-          return (
-            <Input
-              {...rest}
-              placeholder={intl.formatMessage({
-                id: 'pages.searchTable.exception',
-                defaultMessage: 'Please enter the reason for the exception!',
-              })}
-            />
-          );
-        }
-        return defaultRender(item);
-      },
+      // valueType: 'dateTime',
+      // renderFormItem: (item, { defaultRender, ...rest }, form) => {
+      //   const status = form.getFieldValue('status');
+      //   if (`${status}` === '0') {
+      //     return false;
+      //   }
+      //   if (`${status}` === '3') {
+      //     return (
+      //       <Input
+      //         {...rest}
+      //         placeholder={intl.formatMessage({
+      //         placeholder={intl.formatMessage({
+      //           id: 'pages.searchTable.exception',
+      //           defaultMessage: 'Please enter the reason for the exception!',
+      //         })}
+      //       />
+      //     );
+      //   }
+      //   return defaultRender(item);
+      // },
     },
     {
-      title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="Operating" />,
+      title: <FormattedMessage id="x" defaultMessage="Operating" />,
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
@@ -229,13 +237,10 @@ const TableList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="Configuration" />
+          <FormattedMessage id="x" defaultMessage="Configuration" />
         </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="Subscribe to alerts"
-          />
+        <a key="subscribeAlert" >
+          <FormattedMessage id="x" defaultMessage="Activate" />
         </a>,
       ],
     },
@@ -245,14 +250,19 @@ const TableList: React.FC = () => {
     <PageContainer>
       <ProTable<API.RuleListItem, API.PageParams>
         headerTitle={intl.formatMessage({
-          id: 'pages.searchTable.title',
+          id: 'x',
           defaultMessage: 'Enquiry form',
         })}
         actionRef={actionRef}
         rowKey="key"
         search={{
           labelWidth: 120,
+          searchText: "Search",
+          resetText: "Reset",
+          collapseRender:()=>false,
+          collapsed: false
         }}
+
         toolBarRender={() => [
           <Button
             type="primary"
@@ -261,7 +271,7 @@ const TableList: React.FC = () => {
               handleModalOpen(true);
             }}
           >
-            <PlusOutlined /> <FormattedMessage id="pages.searchTable.new" defaultMessage="New" />
+            <PlusOutlined /> <FormattedMessage id="x" defaultMessage="New" />
           </Button>,
         ]}
         request={rule}
@@ -276,18 +286,18 @@ const TableList: React.FC = () => {
         <FooterToolbar
           extra={
             <div>
-              <FormattedMessage id="pages.searchTable.chosen" defaultMessage="Chosen" />{' '}
+              <FormattedMessage id="x" defaultMessage="Chosen" />{' '}
               <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
-              <FormattedMessage id="pages.searchTable.item" defaultMessage="项" />
+              <FormattedMessage id="x" defaultMessage="item(s)" />
               &nbsp;&nbsp;
-              <span>
-                <FormattedMessage
-                  id="pages.searchTable.totalServiceCalls"
-                  defaultMessage="Total number of service calls"
-                />{' '}
-                {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}
-                <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />
-              </span>
+              {/*<span>*/}
+              {/*  <FormattedMessage*/}
+              {/*    id="pages.searchTable.totalServiceCalls"*/}
+              {/*    defaultMessage="Total number of service calls"*/}
+              {/*  />{' '}*/}
+              {/*  {selectedRowsState.reduce((pre, item) => pre + item.callNo!, 0)}{' '}*/}
+              {/*  <FormattedMessage id="pages.searchTable.tenThousand" defaultMessage="万" />*/}
+              {/*</span>*/}
             </div>
           }
         >
@@ -297,26 +307,28 @@ const TableList: React.FC = () => {
               setSelectedRows([]);
               actionRef.current?.reloadAndRest?.();
             }}
+            danger
+            type="primary"
           >
             <FormattedMessage
-              id="pages.searchTable.batchDeletion"
+              id="x"
               defaultMessage="Batch deletion"
-            />
-          </Button>
-          <Button type="primary">
-            <FormattedMessage
-              id="pages.searchTable.batchApproval"
-              defaultMessage="Batch approval"
             />
           </Button>
         </FooterToolbar>
       )}
       <ModalForm
         title={intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: 'New rule',
+          id: 'x',
+          defaultMessage: 'Add a new metahuman character',
         })}
         width="400px"
+        submitter={{
+            searchConfig: {
+                submitText: 'Submit',
+                resetText: 'Cancel',
+            },
+        }}
         open={createModalOpen}
         onOpenChange={handleModalOpen}
         onFinish={async (value) => {
@@ -335,16 +347,17 @@ const TableList: React.FC = () => {
               required: true,
               message: (
                 <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="Rule name is required"
+                  id="x"
+                  defaultMessage="Metahuman name is required!"
                 />
               ),
             },
           ]}
           width="md"
           name="name"
+          placeholder="Please input metahuman name"
         />
-        <ProFormTextArea width="md" name="desc" />
+        <ProFormTextArea width="md" name="desc" placeholder="Please input metahuman description"/>
       </ModalForm>
       <UpdateForm
         onSubmit={async (value) => {
@@ -367,6 +380,7 @@ const TableList: React.FC = () => {
         values={currentRow || {}}
       />
 
+      {/* The right pop-up */}
       <Drawer
         width={600}
         open={showDetail}

@@ -16,7 +16,7 @@ export default [
     layout: false,
     routes: [
       {
-        name: 'login',
+        name: 'Login',
         path: '/user/login',
         component: './User/Login',
       },
@@ -24,7 +24,7 @@ export default [
   },
   {
     path: '/welcome',
-    name: 'welcome',
+    name: 'Welcome',
     icon: 'smile',
     // component: './Welcome',
     component: './Conversation/',
@@ -44,7 +44,12 @@ export default [
   },
   {
     path: '/',
-    redirect: '/welcome',
+    redirect: '/admin',
+  },
+  {
+    name: 'Metahuman Character Details',
+    path: '/character-details/:characterID',
+    component: './MetahumanDetails',
   },
   {
     path: '*',
