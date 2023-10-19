@@ -6,6 +6,7 @@ import { useIntl } from '@umijs/max';
 import { Card, Col, Row, Button, Modal, Space } from 'antd';
 import React, {useEffect, useState} from 'react';
 import Metahuman from "@/components/Metahuman";
+import axios from 'axios';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
@@ -16,6 +17,18 @@ const Admin: React.FC = () => {
   const [cards, setCards] = useState([] as { id: number; name: string; description: string; image: string }[]);
 
   useEffect(() => {
+
+      const fetchData = async () => {
+          try {
+              const response = await axios.get('/sys/metahuman/list');
+              console.log(response)
+          } catch (error) {
+              console.error('Error fetching data:', error);
+          }
+      };
+
+      fetchData();
+
       // get Metahuman card data from back-end and update the status
       // this is fake data
       const fakeData = [
