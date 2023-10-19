@@ -18,16 +18,14 @@ const Admin: React.FC = () => {
 
   useEffect(() => {
 
-      const fetchData = async () => {
+      (async () => {
           try {
-              const response = await axios.get('/sys/metahuman/list');
+              const response = await axios.post('/sys/metahuman/list', {});
               console.log(response)
           } catch (error) {
               console.error('Error fetching data:', error);
           }
-      };
-
-      fetchData();
+      })();
 
       // get Metahuman card data from back-end and update the status
       // this is fake data
