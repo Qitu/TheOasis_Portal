@@ -1,130 +1,109 @@
-import React, { useEffect, useState } from "react";
-import { Avatar, Tooltip, Button, Space, Form, Descriptions, Tabs, Input, List } from 'antd';
+import { LeftOutlined, MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons';
 import type { DescriptionsProps, TabsProps } from 'antd';
-import { RedoOutlined, QuestionCircleOutlined, SaveOutlined, MessageOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { Button, Descriptions, Image, Space, Tabs, Typography } from 'antd';
+import advancedContent from './AdvancedContent';
+import basicContent from './BasicContent';
 import styles from './index.less';
 
-
-const { TextArea } = Input;
+const { Link } = Typography;
 
 const tabItems: TabsProps['items'] = [
   {
     key: '1',
     label: 'Basic',
-    children: BasicContent(),
+    children: basicContent(),
   },
   {
     key: '2',
     label: 'Advanced',
-    children: 'Content of Tab Pane 2',
-  }
+    children: advancedContent(),
+  },
 ];
 
 const items: DescriptionsProps['items'] = [
   {
     key: '1',
-    label: 'UserName',
-    children: 'Zhou Maomao',
+    label: 'Status',
+    children: 'Draft',
   },
   {
     key: '2',
-    label: 'Telephone',
-    children: '1810000000',
+    label: 'Gender',
+    children: 'Female',
   },
   {
     key: '3',
-    label: 'Live',
-    children: 'Hangzhou, Zhejiang',
+    label: 'Category',
+    children: 'NUS-ISS',
+  },
+  {
+    key: '4',
+    label: 'Last update',
+    children: '10.20.2023',
   },
 ];
 
-function BasicContent() {
-  const listdata = [
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.',
-    'Australian walks 100km after outback crash.',
-    'Man charged over missing wedding girl.',
-    'Los Angeles battles huge wildfires.',
-  ];
-  return <div style={{ marginTop: '-16px', minHeight: '90vh', padding: '20px 20px', background: 'rgb(250, 248, 245)' }}>
-      <div>
-        <strong style={{ lineHeight: '36px' }}>
-          Core description
-          <Tooltip title="prompt text">
-            <QuestionCircleOutlined style={{ marginLeft: '10px' }} />
-          </Tooltip>
-        </strong>
-        <TextArea 
-          placeholder="Basic usage" 
-          autoSize={{ minRows: 6 }}
+// interface VoiceRecorderProps {
+//     id: number // Metahuman ID
+// }
+
+function MetahumanDetail() {
+  return (
+    <div>
+      <div style={{ margin: '10px 10px 0' }}>
+        <Button
+          type="link"
+          style={{ background: 'none' }}
+          size={'large'}
+          shape="circle"
+          icon={<LeftOutlined />}
         />
       </div>
-
-      <div style={{ marginTop: '20px' }}>
-        <strong style={{ lineHeight: '36px' }}>Variable Management</strong>
-        <List
-          // header={<div>Variables...</div>}
-          // footer={<div>Footer</div>}
-          style={{ background: 'white'}}
-          bordered
-          dataSource={listdata}
-          renderItem={(item) => (
-            <List.Item>
-              {item}
-            </List.Item>
-          )}
-        />
-      </div>
-    </div>
-
-  
-}
-
-
-interface VoiceRecorderProps {
-    recording: boolean
-    openRecord: boolean
-    resultText: string 
-    recordEnable: Function
-    setOpenRecordg: Function
-}
-
-function MetahumanDetail(props: VoiceRecorderProps) {
-    return <div>
-        <div className={styles.flexbox}>
-          {/* Avatar */}
-          <div style={{'width': '10%'}}>
-            <Avatar shape="square" size={80} icon={<RedoOutlined />} />
-          </div>
-          {/* Name & Description */}
-          <div style={{'width': '40%'}}>
-            <div className={styles.title}>Galadriel</div>
-            <div className={styles.subtitle}>Elf Elder</div>
-          </div>
-          {/* Action Buttons */}
-          <div style={{'width': '50%', 'textAlign': 'right', 'paddingTop': '15px'}}>
-            <Space>
-              <Button shape="round" icon={<ShareAltOutlined />}>Share</Button>
-              <Button shape="round" icon={<MessageOutlined />}>Chat</Button>
-              <Button type="primary" shape="round" icon={<SaveOutlined />}>Save</Button>
-            </Space>
-          </div>
+      <div className={styles.flexbox}>
+        {/* Avatar */}
+        <div style={{ margin: '0 20px' }}>
+          <Image
+            width={100}
+            style={{ borderRadius: '5px' }}
+            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          />
+          {/* <Avatar shape="square" size={80} icon={<RedoOutlined />} /> */}
         </div>
+        {/* Name & Description */}
+        <div style={{}}>
+          <div className={styles.title}>Galadriel</div>
+          <div className={styles.subtitle}>Elf Elder</div>
+          <Link
+            href="https://ant.design"
+            target="_blank"
+            style={{ position: 'relative', top: '23px' }}
+          >
+            Edit image
+          </Link>
+        </div>
+        {/* Action Buttons */}
+        <div style={{ flex: 1, textAlign: 'right', paddingTop: '15px' }}>
+          <Space>
+            <Button shape="round" icon={<ShareAltOutlined />}>
+              Share
+            </Button>
+            <Button shape="round" icon={<MessageOutlined />}>
+              Chat
+            </Button>
+            <Button type="primary" shape="round" icon={<SaveOutlined />}>
+              Save
+            </Button>
+          </Space>
+        </div>
+      </div>
 
-        {/* Metahuman Profile */}
-        <Descriptions 
-          style={{'padding': '5px 20px'}}
-          layout="vertical"
-          items={items} 
-        />
+      {/* Metahuman Profile */}
+      <Descriptions style={{ padding: '15px 20px' }} layout="vertical" column={4} items={items} />
 
-      <Tabs 
-        defaultActiveKey="1" 
-        items={tabItems} 
-        tabBarStyle={{padding: '0 20px'}}
-        // onChange={onChange}
-      />
+      {/* Metahuman Personality */}
+      <Tabs defaultActiveKey="1" items={tabItems} tabBarStyle={{ padding: '0 20px' }} />
     </div>
+  );
 }
 
 export default MetahumanDetail;

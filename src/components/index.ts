@@ -6,8 +6,8 @@
  * 布局组件
  */
 import Footer from './Footer';
+import Metahuman from './Metahuman';
 import { Question, SelectLang } from './RightContent';
 import { AvatarDropdown, AvatarName } from './RightContent/AvatarDropdown';
-import Metahuman from './Metahuman'
 
-export { AvatarDropdown, AvatarName, Footer, Question, SelectLang, Metahuman };
+export { AvatarDropdown, AvatarName, Footer, Metahuman, Question, SelectLang };
