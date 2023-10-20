@@ -31,7 +31,7 @@ export default [
     layout: false,
   },
   {
-    path: '/metahuman/*',
+    path: '/metahuman/:id',
     name: 'metahuman',
     component: './MetahumanDetail/',
     layout: false,
@@ -45,11 +45,6 @@ export default [
   {
     path: '/',
     redirect: '/admin',
-  },
-  {
-    name: 'Metahuman Character Details',
-    path: '/character-details/:characterID',
-    component: './MetahumanDetails',
   },
   {
     path: '*',
