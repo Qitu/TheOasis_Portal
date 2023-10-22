@@ -17,7 +17,7 @@ import {
 const { TextArea } = Input;
 const { Title } = Typography;
 
-function BasicContent() {
+function BasicContent(data: any) {
   return (
     <div style={{ marginTop: '-16px', padding: '20px 20px', background: 'rgb(250, 248, 245)' }}>
       <Row gutter={16}>
@@ -29,14 +29,14 @@ function BasicContent() {
             </Tooltip>
           </strong>
 
-          <TextArea placeholder="Basic usage" autoSize={{ minRows: 7, maxRows: 15 }} />
+          <TextArea value={data.description} placeholder="Basic usage" autoSize={{ minRows: 7, maxRows: 15 }} />
         </Col>
         <Col xs={12} md={9} span={9} style={{ marginTop: '10px' }}>
           <Typography>
             <Title level={5}>Available Variables</Title>
             <Space direction="vertical">
               <div>
-                <Tag color="red">&#123; time &#125;</Tag>代表当前时间
+                <Tag color="red">&#123; time &#125;</Tag>代表当前时间 
               </div>
               <div>
                 <Tag color="red">&#123; time &#125;</Tag>代表当前时间
@@ -61,18 +61,16 @@ function BasicContent() {
           <Form
             name="validate_other"
             layout="vertical"
-            // initialValues={{
-            //   'input-number': 3,
-            //   'checkbox-group': ['A', 'B'],
-            //   rate: 3.5,
-            //   'color-picker': null,
-            // }}
-            // style={{ maxWidth: 600 }}
+            initialValues={{
+              pitch: data.pitch,
+              speed: data.speed,
+              speaker: data.speaker,
+            }}
           >
             <Row gutter={16}>
               <Col span={24}>
                 <Space>
-                  <Form.Item label="Voice">
+                  <Form.Item label="Voice" name="speaker">
                     <Select
                       defaultValue="lucy"
                       style={{ width: '360px' }}
@@ -95,13 +93,13 @@ function BasicContent() {
                 </Space>
               </Col>
               <Col span={12}>
-                <Form.Item label="Pitch">
-                  <Slider defaultValue={50} disabled={false} />
+                <Form.Item label="Pitch" name="pitch">
+                  <Slider disabled={false} />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Speed">
-                  <Slider defaultValue={1} disabled={false} />
+                <Form.Item label="Speed" name="speed">
+                  <Slider disabled={false} />
                 </Form.Item>
               </Col>
             </Row>

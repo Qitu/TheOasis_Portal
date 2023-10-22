@@ -1,53 +1,82 @@
 import { LeftOutlined, MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons';
 import type { DescriptionsProps, TabsProps } from 'antd';
-import { Button, Descriptions, Image, Space, Tabs, Typography } from 'antd';
+import { Button, Descriptions, Image, Space, Tabs, Typography, message } from 'antd';
 import advancedContent from './AdvancedContent';
 import basicContent from './BasicContent';
+import { quryMetahuman, metahumanBody } from './api';
 import styles from './index.less';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { parseInt } from 'lodash';
 
 const { Link } = Typography;
 
-const tabItems: TabsProps['items'] = [
-  {
-    key: '1',
-    label: 'Basic',
-    children: basicContent(),
-  },
-  {
-    key: '2',
-    label: 'Advanced',
-    children: advancedContent(),
-  },
-];
 
-const items: DescriptionsProps['items'] = [
-  {
-    key: '1',
-    label: 'Status',
-    children: 'Draft',
-  },
-  {
-    key: '2',
-    label: 'Gender',
-    children: 'Female',
-  },
-  {
-    key: '3',
-    label: 'Category',
-    children: 'NUS-ISS',
-  },
-  {
-    key: '4',
-    label: 'Last update',
-    children: '10.20.2023',
-  },
-];
-
+  
 // interface VoiceRecorderProps {
 //     id: number // Metahuman ID
 // }
 
 function MetahumanDetail() {
+  const [metahuman, setMetahuman] = useState<any>({});
+  const [descs, setDescs] = useState<any>([]);
+
+  const getMetahumanDetail = async (id: string) => {
+    const data:any = await quryMetahuman(parseInt(id));
+    
+    if (data.code === 200) {
+      setMetahuman({
+        ...data.object
+      })
+      setDescs([
+        {
+          key: '1',
+          label: 'Status',
+          children: data.object.status,
+        },
+        {
+          key: '2',
+          label: 'Gender',
+          children: data.object.gender,
+        },
+        {
+          key: '3',
+          label: 'Category',
+          children: data.object.category,
+        },
+        {
+          key: '4',
+          label: 'Last update',
+          children: data.object.updateTime,
+        },
+      ])
+
+
+      console.log(data.object);
+    } else {
+      console.log(data.message);
+    }
+  };
+
+  const param = useParams<any>();
+
+  useEffect(() => {
+    getMetahumanDetail(param.id || "");
+  }, [name]);
+
+  const tabItems: TabsProps['items'] = [
+    {
+      key: '1',
+      label: 'Basic',
+      children: basicContent(metahuman),
+    },
+    {
+      key: '2',
+      label: 'Advanced',
+      children: advancedContent(),
+    },
+  ];
+
   return (
     <div>
       <div style={{ margin: '10px 10px 0' }}>
@@ -71,8 +100,8 @@ function MetahumanDetail() {
         </div>
         {/* Name & Description */}
         <div style={{}}>
-          <div className={styles.title}>Galadriel</div>
-          <div className={styles.subtitle}>Elf Elder</div>
+          <div className={styles.title}>{ metahuman.name }</div>
+          <div className={styles.subtitle}>{ metahuman.subname || '-' }</div>
           <Link
             href="https://ant.design"
             target="_blank"
@@ -98,7 +127,7 @@ function MetahumanDetail() {
       </div>
 
       {/* Metahuman Profile */}
-      <Descriptions style={{ padding: '15px 20px' }} layout="vertical" column={4} items={items} />
+      <Descriptions style={{ padding: '15px 20px' }} layout="vertical" column={4} items={descs} />
 
       {/* Metahuman Personality */}
       <Tabs defaultActiveKey="1" items={tabItems} tabBarStyle={{ padding: '0 20px' }} />
