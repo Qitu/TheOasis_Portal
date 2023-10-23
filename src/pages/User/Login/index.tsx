@@ -21,6 +21,7 @@ import { Alert, Tabs, message } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ActionIcons = () => {
@@ -104,7 +105,9 @@ const Login: React.FC = () => {
   const intl = useIntl();
 
   const fetchUserInfo = async () => {
+    // Get user details
     const userInfo = await initialState?.fetchUserInfo?.();
+    console.log(userInfo);
     if (userInfo) {
       flushSync(() => {
         setInitialState((s) => ({
@@ -116,6 +119,53 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
+    // new login method
+    // const msg = await axios.post('/login/doLogin',
+    //     { mobile: values.username, password: values.password },
+    //     {
+    //       headers: {
+    //             'Content-Type': 'application/json',
+    //       },
+    //     });
+    //
+    // if (msg.data.message === "SUCCESS") {
+    //   const defaultLoginSuccessMessage = intl.formatMessage({
+    //       id: 'xxx',
+    //       defaultMessage: 'Login Successful!',
+    //   });
+    //   message.success(defaultLoginSuccessMessage);
+    //
+    //   // get user details
+    //   const obj = msg.data.object;
+    //   const userInfo = {
+    //       name: obj.nickname,
+    //       access: obj.identity,
+    //       avatar: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+    //   }
+    //   if (userInfo) {
+    //     flushSync(() => {
+    //       setInitialState((s) => ({
+    //           ...s,
+    //           currentUser: userInfo,
+    //       }));
+    //     });
+    //   }
+    //
+    //   // if the current url have "redirect"
+    //   const urlParams = new URL(window.location.href).searchParams;
+    //   // admin or user
+    //   history.push(urlParams.get('redirect') || '/');
+    //   return;
+    //
+    // } else {
+    //   const defaultLoginFailureMessage = intl.formatMessage({
+    //       id: 'xxx',
+    //       defaultMessage: 'Login failed, please try again!',
+    //   });
+    //   message.error(defaultLoginFailureMessage);
+    // }
+
+    // old login method
     try {
       // 登录
       const msg = await login({ ...values, type });
@@ -133,6 +183,7 @@ const Login: React.FC = () => {
         history.push(urlParams.get('redirect') || '/');
         return;
       }
+
       console.log(msg);
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);

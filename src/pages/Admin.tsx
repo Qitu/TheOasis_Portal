@@ -19,49 +19,19 @@ const Admin: React.FC = () => {
 
   useEffect(() => {
     // get Metahuman card data from back-end and update the status
-    // this is fake data
-    // const fakeData = [
-    //   {
-    //     id: 1,
-    //     name: 'Card 1',
-    //     description: 'Content for card 1',
-    //     image: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //   },
-    //   {
-    //     id: 2,
-    //     name: 'Card 2',
-    //     description: 'Content for card 2',
-    //     image: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //   },
-    //   {
-    //     id: 3,
-    //     name: 'Card 3',
-    //     description: 'Content for card 3',
-    //     image: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //   },
-    //   {
-    //     id: 4,
-    //     name: 'Card 4',
-    //     description: 'Content for card 4',
-    //     image: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png',
-    //   },
-    // ];
-    // setCards(fakeData);
-
     (async () => {
       try {
         const response = await axios.post('/sys/metahuman/list', {});
-        cards = response.data.obj
+        cards = response.data.obj;
         // mock
-        cards[0].image = "https://models.readyplayer.me/651e3c55dab353c6356989fe.png"
-        cards[1].image = "https://models.readyplayer.me/64e3055495439dfcf3f0b665.png"
+        cards[0].image = 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png';
+        cards[1].image = 'https://models.readyplayer.me/64e3055495439dfcf3f0b665.png';
 
         setCards(cards);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
-
   }, []);
 
   return (
