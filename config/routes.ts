@@ -22,12 +22,12 @@ export default [
       },
     ],
   },
-  {
-    path: '/welcome',
-    name: 'Welcome',
-    icon: 'smile',
-    component: './Welcome',
-  },
+  // {
+  //   path: '/welcome',
+  //   name: 'Welcome',
+  //   icon: 'smile',
+  //   component: './Welcome',
+  // },
   {
     path: '/admin',
     name: 'Metahuman Configuration',
@@ -35,12 +35,12 @@ export default [
     access: 'canAdmin',
     component: './Admin',
   },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
-  },
+  // {
+  //   name: 'list.table-list',
+  //   icon: 'table',
+  //   path: '/list',
+  //   component: './TableList',
+  // },
   {
     path: '/',
     redirect: '/admin',
@@ -49,6 +49,7 @@ export default [
     name: 'Metahuman Character Details',
     path: '/character-details/:characterID',
     component: './MetahumanDetails',
+    hideInMenu: true,
   },
   {
     path: '*',

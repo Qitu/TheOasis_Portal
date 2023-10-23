@@ -3,12 +3,14 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Metahuman from '@/components/Metahuman';
-import { Card, Col, Row } from 'antd';
+import {Card, Col, Form, Row, Select} from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
+
+const { Option } = Select;
 
 const Admin: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,25 +20,61 @@ const Admin: React.FC = () => {
   );
 
   useEffect(() => {
+
     // get Metahuman card data from back-end and update the status
     (async () => {
       try {
         const response = await axios.post('/sys/metahuman/list', {});
-        cards = response.data.obj;
-        // mock
-        cards[0].image = 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png';
-        cards[1].image = 'https://models.readyplayer.me/64e3055495439dfcf3f0b665.png';
+        let arrayData = response.data.obj;
 
-        setCards(cards);
+        // mock
+        arrayData[0].image = "https://models.readyplayer.me/651e3c55dab353c6356989fe.png"
+        arrayData[1].image = "https://models.readyplayer.me/64e3055495439dfcf3f0b665.png"
+
+        setCards(arrayData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
+
   }, []);
 
   return (
     <PageContainer>
-      <Row gutter={[16, 16]}>
+      {/* 选项框部分 */}
+      <Form layout="vertical"> {/* 使用垂直布局 */}
+        <Row gutter={[16, 16]}>
+          <Col span={8}>
+            <Form.Item label="Gender"> {/* 添加标签 */}
+              <Select defaultValue="male" style={{ width: '100%' }}>
+                <Option value="male">male</Option>
+                <Option value="female">female</Option>
+                <Option value="others">others</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="标签2">
+              <Select defaultValue="option1" style={{ width: '100%' }}>
+                <Option value="option1">选项1</Option>
+                <Option value="option2">选项2</Option>
+                <Option value="option3">选项3</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item label="标签3">
+              <Select defaultValue="option1" style={{ width: '100%' }}>
+                <Option value="option1">选项1</Option>
+                <Option value="option2">选项2</Option>
+                <Option value="option3">选项3</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         {' '}
         {/* 使用 Row 和 Col 来布局卡片，gutter 设置卡片之间的间距 */}
         {cards.map((card, index) => (
