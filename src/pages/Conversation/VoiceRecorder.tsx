@@ -7,6 +7,7 @@ interface VoiceRecorderProps {
   resultText: string;
   recordEnable: any;
   setOpenRecordg: any;
+  processRecordText: any;
 }
 
 function VoiceRecorder(props: VoiceRecorderProps) {
@@ -23,7 +24,7 @@ function VoiceRecorder(props: VoiceRecorderProps) {
       extra={
         <Space>
           {props.resultText !== '' ? (
-            <Button type="primary" disabled={props.recording}>
+            <Button type="primary" disabled={props.recording} onClick={() => props.processRecordText()}>
               Send
             </Button>
           ) : (

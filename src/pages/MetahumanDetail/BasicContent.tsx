@@ -13,11 +13,13 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
+import { TestSpeech } from '../Conversation/tts'
 
 const { TextArea } = Input;
 const { Title } = Typography;
 
-function BasicContent(data: any) {
+function BasicContent(data: any, setProp: any) {
+  // const [voices, setVoices] = useState([]);
   return (
     <div style={{ marginTop: '-16px', padding: '20px 20px', background: 'rgb(250, 248, 245)' }}>
       <Row gutter={16}>
@@ -29,7 +31,7 @@ function BasicContent(data: any) {
             </Tooltip>
           </strong>
 
-          <TextArea value={data.description} placeholder="Basic usage" autoSize={{ minRows: 7, maxRows: 15 }} />
+          <TextArea defaultValue={data.description} onChange={(val) => {setProp('description', val.currentTarget.value)}} placeholder="Basic usage" autoSize={{ minRows: 7, maxRows: 15 }} />
         </Col>
         <Col xs={12} md={9} span={9} style={{ marginTop: '10px' }}>
           <Typography>
@@ -54,60 +56,86 @@ function BasicContent(data: any) {
           </Typography>
         </Col>
       </Row>
-
-      <div style={{ marginTop: '20px' }}>
+      
+      {
+        data ?
+        <div style={{ marginTop: '20px' }}>
         <strong style={{ lineHeight: '36px' }}>Voice Setting</strong>
         <Card style={{ width: '100%' }}>
-          <Form
-            name="validate_other"
-            layout="vertical"
-            initialValues={{
-              pitch: data.pitch,
-              speed: data.speed,
-              speaker: data.speaker,
-            }}
-          >
             <Row gutter={16}>
-              <Col span={24}>
+              <Col span={24} style={{ marginBottom: '26px' }}>
+                <div>Voice: </div>
                 <Space>
-                  <Form.Item label="Voice" name="speaker">
                     <Select
-                      defaultValue="lucy"
                       style={{ width: '360px' }}
                       // onChange={handleChange}
-                      options={[
-                        { value: 'jack', label: 'Jack' },
-                        { value: 'lucy', label: 'Lucy' },
-                        { value: 'Yiminghe', label: 'yiminghe' },
-                        { value: 'disabled', label: 'Disabled', disabled: true },
-                      ]}
+                      defaultValue={data.speaker}
+                      options={voiceList[data.gender]}
+                      onSelect={(val) => setProp('speaker', val)}
                     />
-                  </Form.Item>
                   <Button
                     style={{ position: 'relative', top: '2px' }}
                     shape="round"
                     icon={<SoundOutlined />}
+                    onClick={() => TestSpeech(data.name, data.speaker, data.speed, data.pitch)}
                   >
                     Listen
                   </Button>
                 </Space>
               </Col>
               <Col span={12}>
-                <Form.Item label="Pitch" name="pitch">
-                  <Slider disabled={false} />
-                </Form.Item>
+                Pitch: 
+                <Slider disabled={false} defaultValue={data.pitch} min={-100} max={100} step={1} onAfterChange={(val) => {setProp('pitch', val)}}/>
               </Col>
               <Col span={12}>
-                <Form.Item label="Speed" name="speed">
-                  <Slider disabled={false} />
-                </Form.Item>
+                Speed: 
+                <Slider disabled={false} defaultValue={data.speed} min={-100} max={100} step={1} onAfterChange={(val) => {setProp('speed', val)}}/>
               </Col>
             </Row>
-          </Form>
         </Card>
       </div>
+        : ''
+      }
     </div>
   );
 }
+
+const voiceList:any = {
+  male: [
+    {label: 'Australia, Willem', value: 'en-AU-WilliamNeural'},
+    {label: 'Australia, Duncan', value: 'en-AU-DuncanNeural'},
+    {label: 'Australia, Ken', value: 'en-AU-KenNeural'},
+    {label: 'Australia, Neil', value: 'en-AU-NeilNeural'},
+    {label: 'Australia, Tim', value: 'en-AU-TimNeural'},
+    {label: 'China, Yunxi', value: 'zh-CN-YunxiNeural'},
+    {label: 'China, Yunze', value: 'zh-CN-YunzeNeural'},
+    {label: 'Canada, Liam', value: 'en-CA-LiamNeural'},
+    {label: 'UK, Ryan', value: 'en-GB-RyanNeural'},
+    {label: 'UK, Alfie', value: 'en-GB-AlfieNeural'},
+    {label: 'HK, Sam', value: 'en-HK-SamNeural'},
+    {label: 'Singapore, Wayne', value: 'en-SG-WayneNeural'},
+    {label: 'USA, Guy', value: 'en-US-GuyNeural'},
+    {label: 'USA, Davis', value: 'en-US-DavisNeural'},
+    {label: 'USA, Brandon', value: 'en-US-BrandonNeural'}
+  ],
+  female: [
+    {label: 'Australia, Annette', value: 'en-AU-AnnetteNeural'},
+    {label: 'Australia, Carly', value: 'en-AU-CarlyNeural'},
+    {label: 'Australia, Elsie', value: 'en-AU-ElsieNeural'},
+    {label: 'Australia, Joanne', value: 'en-AU-JoanneNeural'},
+    {label: 'Australia, Kim', value: 'en-AU-KimNeural'},
+    {label: 'China, Xiaoxiao', value: 'zh-CN-XiaoxiaoNeural'},
+    {label: 'China, Xiaoyan', value: 'zh-CN-XiaoyanNeural'},
+    {label: 'Canada, Clara', value: 'en-CA-ClaraNeural'},
+    {label: 'UK, Sonia', value: 'en-GB-SoniaNeural'},
+    {label: 'UK, Libby', value: 'en-GB-LibbyNeural'},
+    {label: 'HK, Yan', value: 'en-HK-YanNeural'},
+    {label: 'Singapore, Luna', value: 'en-SG-LunaNeural'},
+    {label: 'USA, Jenny', value: 'en-US-JennyNeural'},
+    {label: 'USA, Amber', value: 'en-US-AmberNeural'},
+    {label: 'USA, Ashley', value: 'en-US-AshleyNeural'}
+  ]
+}
+
 
 export default BasicContent;

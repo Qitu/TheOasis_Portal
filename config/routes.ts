@@ -23,6 +23,12 @@ export default [
     ],
   },
   {
+    path: '/conversation/:id',
+    name: 'conversation',
+    component: './Conversation/',
+    layout: false,
+  },
+  {
     path: '/welcome',
     name: 'Welcome',
     icon: 'smile',

@@ -12,18 +12,18 @@ import { UnityContext } from 'react-unity-webgl';
 const [identityKey, region] = ['77d12aff83c544caa8a59063aa877f87', 'eastasia'];
 const speechConfig = SpeechConfig.fromSubscription(identityKey, region);
 
-export function TextToSpeech(
+export const TextToSpeech = (
   unityContext: UnityContext,
-  content = 'Hello world, I am trying to test new features.',
-) {
+  content: string,
+  speaker: string
+) => {
   // Customize speak fomat.
   speechConfig.speechSynthesisOutputFormat = SpeechSynthesisOutputFormat['Riff16Khz16BitMonoPcm'];
   // No voice output, leave this to unity.
   const pullStream = PullAudioOutputStream.createPullStream();
   const audioConfig = AudioConfig.fromStreamOutput(pullStream);
 
-  // TODO: Get data config.
-  speechConfig.speechSynthesisVoiceName = 'en-GB-RyanNeural';
+  speechConfig.speechSynthesisVoiceName = speaker;
 
   // Create the speech synthesizer.
   const synthesizer: any = new SpeechSynthesizer(speechConfig, audioConfig);
@@ -44,12 +44,12 @@ export function TextToSpeech(
           const chunkArray = uint8Array.slice(start, end);
           const chunkString = Array.from(chunkArray).join(',');
           // Deliver the sharded data to unity.
-          unityContext.send('AudioControl', 'ReceiveChunk', chunkString);
+          unityContext.send('AudioPlayer', 'ReceiveChunk', chunkString);
         }
         // Mark as completed.
         setTimeout(() => {
-          unityContext.send('AudioControl', 'ReceiveChunk', 'Complete');
-        }, 100);
+          unityContext.send('AudioPlayer', 'ReceiveChunk', 'Complete');
+        }, 1000);
         synthesizer.close();
       }
     },
@@ -58,4 +58,28 @@ export function TextToSpeech(
       synthesizer.close();
     },
   );
+}
+
+const ssmGenerator = (content: string, speaker:string, speed: number, pitch: number) => {
+  return `
+    <speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+      <voice name="${speaker}">
+        <prosody rate="${speed > 0 ? '+' + speed: speed}%" pitch="${pitch > 0 ? '+' + pitch: pitch}%">${content}</prosody>
+      </voice>
+    </speak>`;
+}
+
+export const TestSpeech = (name:string, speaker:string, speed: number, pitch: number) => {
+
+  const audioConfig = AudioConfig.fromDefaultSpeakerOutput();
+  // Create the speech synthesizer.
+  const synthesizer: any = new SpeechSynthesizer(speechConfig, audioConfig);
+  
+  synthesizer.speakSsmlAsync(
+    ssmGenerator(`Hi, I am ${name}, nice to meet you in the Oasis.`, speaker, speed, pitch),
+    // `Hi, I am ${name}, nice to meet you in the Oasis.`,
+    () => {
+      console.log('Test voice start.')
+    }
+  )
 }

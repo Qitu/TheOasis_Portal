@@ -9,6 +9,15 @@ export async function quryMetahuman(id: number) {
   });
 }
 
+export async function updateMetahuman(id:number, data: any) {
+    return request<{
+      data: API.CurrentUser;
+    }>('/sys/metahuman/' + id, {
+      method: 'PUT',
+      data
+    });
+  }
+  
 export interface metahumanBody {
     category: string;
     createTime: string;
