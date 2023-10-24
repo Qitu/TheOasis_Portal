@@ -1,7 +1,6 @@
 // import { Footer } from '@/components';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { login } from '@/services/ant-design-pro/api';
-// import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -12,7 +11,6 @@ import {
 } from '@ant-design/icons';
 import {
   LoginForm,
-  // ProFormCaptcha,
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
@@ -203,6 +201,17 @@ const Login: React.FC = () => {
     // }
   };
 
+    const handleRegister = async (values: Record<string, any>) => {
+      const msg = await axios.post('/login/doRegister',
+          { mobile: values.mobile, nickname: values.username_set, password: values.password_set },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      console.log(msg)
+    }
+
   const { status, type: loginType } = userLoginState;
 
   return (
@@ -225,7 +234,7 @@ const Login: React.FC = () => {
       >
         <LoginForm
           contentStyle={{
-            minWidth: 280,
+            minWidth: 380,
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.svg" />}
@@ -242,11 +251,23 @@ const Login: React.FC = () => {
           //   />,
           //   <ActionIcons key="icons" />,
           // ]}
+
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            if (type === 'account') {
+              // 当活动标签是 'account' 时调用登录函数
+                await handleSubmit(values as API.LoginParams);
+            } else if (type === 'mobile') {
+              // 当活动标签是 'mobile' 时调用注册函数
+              await handleRegister(values);
+            }
+
           }}
-          submitter={{ searchConfig: { submitText: 'Login' } }}
+          submitter={{
+            searchConfig: {
+              submitText: type === 'account' ? 'Login' : 'Register'  // 根据活动标签动态设置按钮文本
+            } }}
         >
+
           <Tabs
             activeKey={type}
             onChange={setType}
@@ -256,16 +277,16 @@ const Login: React.FC = () => {
                 key: 'account',
                 label: intl.formatMessage({
                   id: 'x',
-                  defaultMessage: 'Login via Username and Password',
+                  defaultMessage: 'Login via Uid and Password',
                 }),
               },
-              // {
-              //   key: 'mobile',
-              //   label: intl.formatMessage({
-              //     id: 'xxx',
-              //     defaultMessage: 'Login via NUS Email',
-              //   }),
-              // },
+              {
+                key: 'mobile',
+                label: intl.formatMessage({
+                  id: 'xxx',
+                  defaultMessage: 'Register',
+                }),
+              },
             ]}
           />
 
@@ -273,7 +294,7 @@ const Login: React.FC = () => {
             <LoginMessage
               content={intl.formatMessage({
                 id: 'x',
-                defaultMessage: 'Incorrect username or password',
+                defaultMessage: 'Incorrect uid or password',
               })}
             />
           )}
@@ -287,13 +308,13 @@ const Login: React.FC = () => {
                 }}
                 placeholder={intl.formatMessage({
                   id: 'x',
-                  defaultMessage: 'Please enter your username',
+                  defaultMessage: 'Please enter your uid',
                 })}
                 rules={[
                   {
                     required: true,
                     message: (
-                      <FormattedMessage id="x" defaultMessage="Please enter your username!" />
+                      <FormattedMessage id="x" defaultMessage="Please enter your uid!" />
                     ),
                   },
                 ]}
@@ -320,89 +341,94 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {/*{status === 'error' && loginType === 'mobile' && <LoginMessage content="Email Verification Code Error!" />}*/}
-          {/*{type === 'mobile' && (*/}
-          {/*  <>*/}
-          {/*    <ProFormText*/}
-          {/*      fieldProps={{*/}
-          {/*        size: 'large',*/}
-          {/*        prefix: <UserOutlined />,*/}
-          {/*      }}*/}
-          {/*      name="mobile"*/}
-          {/*      addonAfter="@u.nus.edu"*/}
-          {/*      placeholder={intl.formatMessage({*/}
-          {/*        id: 'xxx',*/}
-          {/*        defaultMessage: 'NUS Email Address',*/}
-          {/*      })}*/}
-          {/*      rules={[*/}
-          {/*        {*/}
-          {/*          required: true,*/}
-          {/*          message: (*/}
-          {/*            <FormattedMessage*/}
-          {/*              id="xxx"*/}
-          {/*              defaultMessage="Please input your NUS email address!"*/}
-          {/*            />*/}
-          {/*          ),*/}
-          {/*        },*/}
-          {/*        // {*/}
-          {/*        //   pattern: /^1\d{10}$/,*/}
-          {/*        //   message: (*/}
-          {/*        //     <FormattedMessage*/}
-          {/*        //       id="pages.login.phoneNumber.invalid"*/}
-          {/*        //       defaultMessage="手机号格式错误！"*/}
-          {/*        //     />*/}
-          {/*        //   ),*/}
-          {/*        // },*/}
-          {/*      ]}*/}
-          {/*    />*/}
-          {/*    <ProFormCaptcha*/}
-          {/*      fieldProps={{*/}
-          {/*        size: 'large',*/}
-          {/*        prefix: <LockOutlined />,*/}
-          {/*      }}*/}
-          {/*      captchaProps={{*/}
-          {/*        size: 'large',*/}
-          {/*      }}*/}
-          {/*      placeholder={intl.formatMessage({*/}
-          {/*        id: 'xxx',*/}
-          {/*        defaultMessage: 'Please enter the verification code!',*/}
-          {/*      })}*/}
-          {/*      captchaTextRender={(timing, count) => {*/}
-          {/*        if (timing) {*/}
-          {/*          return `${count} ${intl.formatMessage({*/}
-          {/*            id: 'xxx',*/}
-          {/*            defaultMessage: 'Get a verification code',*/}
-          {/*          })}`;*/}
-          {/*        }*/}
-          {/*        return intl.formatMessage({*/}
-          {/*          id: 'xxx',*/}
-          {/*          defaultMessage: 'Get a verification code',*/}
-          {/*        });*/}
-          {/*      }}*/}
-          {/*      name="captcha"*/}
-          {/*      rules={[*/}
-          {/*        {*/}
-          {/*          required: true,*/}
-          {/*          message: (*/}
-          {/*            <FormattedMessage*/}
-          {/*              id="xxx"*/}
-          {/*              defaultMessage="Please enter the verification code!"*/}
-          {/*            />*/}
-          {/*          ),*/}
-          {/*        },*/}
-          {/*      ]}*/}
-          {/*      onGetCaptcha={async (phone) => {*/}
-          {/*        const result = await getFakeCaptcha({*/}
-          {/*          phone,*/}
-          {/*        });*/}
-          {/*        if (!result) {*/}
-          {/*          return;*/}
-          {/*        }*/}
-          {/*        message.success('Successfully get the verification code!');*/}
-          {/*      }}*/}
-          {/*    />*/}
-          {/*  </>*/}
-          {/*)}*/}
+          {status === 'error' && loginType === 'mobile' && <LoginMessage content="Email Verification Code Error!" />}
+          {type === 'mobile' && (
+            <>
+              {/* set uid */}
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined />,
+                }}
+                name="mobile"
+                placeholder={intl.formatMessage({
+                  id: 'xxx',
+                  defaultMessage: 'Please enter your phone number as the uid',
+                })}
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="xxx"
+                        defaultMessage="Please enter your phone number as the uid!"
+                      />
+                    ),
+                  },
+                  {
+                    pattern: /^1\d{10}$/,
+                    message: (
+                      <FormattedMessage
+                        id="x"
+                        defaultMessage="The phone number format is incorrect!"
+                      />
+                    ),
+                  },
+                ]}
+              />
+
+                {/* set username */}
+                <ProFormText
+                    fieldProps={{
+                        size: 'large',
+                        prefix: <UserOutlined />,
+                    }}
+                    name="username_set"
+                    placeholder={intl.formatMessage({
+                        id: 'xxx',
+                        defaultMessage: 'Please set your username',
+                    })}
+                    rules={[
+                        {
+                            required: true,
+                            message: (
+                                <FormattedMessage
+                                    id="xxx"
+                                    defaultMessage="Please set your username!"
+                                />
+                            ),
+                        }
+                    ]}
+                />
+
+              {/* set password */}
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined />,
+                }}
+                placeholder={intl.formatMessage({
+                  id: 'xxx',
+                  defaultMessage: 'Please set your password',
+                })}
+                name="password_set"
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="xxx"
+                        defaultMessage="Please set your password!"
+                      />
+                    ),
+                  },
+                ]}
+
+              />
+
+            </>
+          )}
+
           <div
             style={{
               marginBottom: 24,
