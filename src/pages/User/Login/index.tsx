@@ -124,11 +124,12 @@ const Login: React.FC = () => {
         { mobile: values.username, password: values.password },
         {
           headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
           },
         });
 
     if (msg.data.message === "SUCCESS") {
+
       const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'xxx',
           defaultMessage: 'Login Successful!',
@@ -136,12 +137,16 @@ const Login: React.FC = () => {
       message.success(defaultLoginSuccessMessage);
 
       // get user details
-      const obj = msg.data.object;
+      const user_obj = msg.data.object;
       const userInfo = {
-          name: obj.nickname,
-          access: obj.identity,
+          uid: user_obj.uid,
+          name: user_obj.nickname,
+          access: user_obj.identity,
           avatar: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
       }
+
+      localStorage.setItem('currentUser', JSON.stringify(userInfo));
+
       if (userInfo) {
         flushSync(() => {
           setInitialState((s) => ({
@@ -154,7 +159,7 @@ const Login: React.FC = () => {
       // if the current url have "redirect"
       const urlParams = new URL(window.location.href).searchParams;
       // admin or user
-      if (obj.identity === "admin") {
+      if (user_obj.identity === "admin") {
           history.push(urlParams.get('redirect') || '/admin');
       } else {
           history.push(urlParams.get('redirect') || '/');

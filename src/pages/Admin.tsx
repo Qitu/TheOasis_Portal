@@ -16,7 +16,7 @@ const Admin: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const intl = useIntl();
   let [cards, setCards] = useState(
-    [] as { mid: number; name: string; description: string; image: string }[],
+    [] as { mid: number; name: string; description: string; image: string; status: string }[],
   );
 
   useEffect(() => {
@@ -86,6 +86,7 @@ const Admin: React.FC = () => {
               name={card.name}
               description={card.description}
               image={card.image}
+              status={card.status}
             />
           </Col>
         ))}
