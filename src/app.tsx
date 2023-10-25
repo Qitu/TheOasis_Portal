@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AvatarDropdown, AvatarName, Question, SelectLang } from '@/components';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
