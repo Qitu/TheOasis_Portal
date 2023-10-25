@@ -7,17 +7,14 @@ The Oiasis of Metahuman
 
 <p align="center">
   <a href="https://github.com/Qitu/TheOasis_Portal/">
-    <img src="public/logo.png" alt="Logo" width="80">
+    <img src="public/logo.png" alt="Logo" width="150">
   </a>
 
   <h3 align="center">Oasis Metahuman</h3>
   <p align="center">
     A configurable metahumen platform
     <br />
-    <strong>Discover the demo below</strong>
     <br />
-    <br />
-    <a href="https://github.com/Qitu/TheOasis_Portal"></a>
   </p>
 
 </p>
@@ -25,19 +22,19 @@ The Oiasis of Metahuman
 ## Content
 
 - [Installation](#Installation)
-  - [Environment setup](#Environment setup)
+  - [EnvironmentSetup](#EnvironmentSetup)
   - [Steps](#Steps)
-- [Folder Structure](#Folder Structure)
+- [FolderStructure](#FolderStructure)
 - [Deployment](#Deployment)
-- [Open frameworks](#Open frameworks)
+- [OpenFrameworks](#OpenFrameworks)
 - [Contributors](#Contributors)
 - [Thanks](#Thanks)
 
 ### Installation
 
-###### Environment setup
+###### EnvironmentSetup
 
-Intsalled NodeJs Env
+- Intsalled NodeJs Env
 
 ###### **Steps**
 
@@ -61,7 +58,7 @@ npm run start
 ```
 
 
-### Folder Structure
+### FolderStructure
 
 
 ```
@@ -90,16 +87,11 @@ src
 └── ...
 
 ```
-
-### 开发的架构
-
-请阅读[ARCHITECTURE.md](https://github.com/Qitu/TheOasis_Portal/blob/master/ARCHITECTURE.md) 查阅为该项目的架构。
-
 ### Deployment
 
 Check **.github/workflows/ci.yml**
 
-### Open frameworks
+### OpenFrameworks
 
 - [Ant Design](https://ant.design/)
 - [Umi](https://umijs.org/)

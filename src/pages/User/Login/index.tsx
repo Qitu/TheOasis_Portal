@@ -16,7 +16,7 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { FormattedMessage, Helmet, SelectLang, history, useIntl, useModel } from '@umijs/max';
+import { FormattedMessage, Helmet, SelectLang, history, useModel } from '@umijs/max';
 import { Alert, Tabs, message } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -101,8 +101,6 @@ const Login: React.FC = () => {
     };
   });
 
-  const intl = useIntl();
-
   const fetchUserInfo = async () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
@@ -121,11 +119,7 @@ const Login: React.FC = () => {
       const msg = await login({ ...values, type });
 
       if (msg.status === 'ok') {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'xxx',
-          defaultMessage: 'Login Successful!',
-        });
-        message.success(defaultLoginSuccessMessage);
+        message.success('Login Successful!');
         await fetchUserInfo();
         // if the current url have "redirect"
         const urlParams = new URL(window.location.href).searchParams;
@@ -137,12 +131,8 @@ const Login: React.FC = () => {
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
     } catch (error) {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'xxx',
-        defaultMessage: 'Login failed, please try again!',
-      });
       console.log(error);
-      message.error(defaultLoginFailureMessage);
+      message.error('Login failed, please try again!');
     }
   };
   const { status, type: loginType } = userLoginState;
@@ -151,10 +141,7 @@ const Login: React.FC = () => {
     <div className={containerClassName}>
       <Helmet>
         <title>
-          {intl.formatMessage({
-            id: 'xxx',
-            defaultMessage: 'Login Page ',
-          })}
+          {'Login Page'}
           - {Settings.title}
         </title>
       </Helmet>
@@ -196,10 +183,7 @@ const Login: React.FC = () => {
             items={[
               {
                 key: 'account',
-                label: intl.formatMessage({
-                  id: 'x',
-                  defaultMessage: 'Login via Username and Password',
-                }),
+                label: 'Login via Username and Password',
               },
               // {
               //   key: 'mobile',
@@ -213,10 +197,7 @@ const Login: React.FC = () => {
 
           {status === 'error' && loginType === 'account' && (
             <LoginMessage
-              content={intl.formatMessage({
-                id: 'x',
-                defaultMessage: 'Incorrect username or password',
-              })}
+              content={'Incorrect username or password'}
             />
           )}
           {type === 'account' && (
@@ -227,10 +208,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'x',
-                  defaultMessage: 'Please enter your username',
-                })}
+                placeholder={'Please enter your username'}
                 rules={[
                   {
                     required: true,
@@ -246,10 +224,7 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'x',
-                  defaultMessage: 'Please enter your password',
-                })}
+                placeholder={'Please enter your password'}
                 rules={[
                   {
                     required: true,
