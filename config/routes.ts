@@ -24,29 +24,18 @@ export default [
   },
   {
     path: '/conversation/:id',
-    name: 'conversation',
-    component: './Conversation/',
     layout: false,
+    component: './Conversation/',
   },
   {
-    path: '/welcome',
-    name: 'Welcome',
-    icon: 'smile',
+    path: '/Home',
+    name: 'Home',
     // component: './Welcome',
     component: './Conversation/',
-    layout: false,
   },
   {
     path: '/metahuman/:id',
-    name: 'metahuman',
     component: './MetahumanDetail/',
-    layout: false,
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './TableList',
   },
   {
     path: '/',

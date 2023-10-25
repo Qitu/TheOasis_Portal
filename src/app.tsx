@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { AvatarDropdown, AvatarName, Question, SelectLang } from '@/components';
+import { AvatarDropdown } from '@/components';
 import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
@@ -53,10 +53,10 @@ export async function getInitialState(): Promise<{
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
-    actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
+    actionsRender: () => [],
     avatarProps: {
-      src: initialState?.currentUser?.avatar,
-      title: <AvatarName />,
+      src: '/logo2.png',
+      title:'Admin',
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },

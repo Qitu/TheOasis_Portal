@@ -1,4 +1,4 @@
-import { LeftOutlined, MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons'
+import { MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons'
 import type { TabsProps } from 'antd'
 import { Button, Image, Space, Tabs, Typography, message, Modal } from 'antd'
 import advancedContent from './AdvancedContent'
@@ -18,8 +18,7 @@ const config: AvatarCreatorConfig = {
   language: 'en',
 };
 
-
-const { Link } = Typography;
+const { Link, Paragraph } = Typography;
   
 // interface VoiceRecorderProps {
 //     id: number // Metahuman ID
@@ -113,7 +112,7 @@ function MetahumanDetail() {
     {
       key: '1',
       label: 'Basic',
-      children: metahuman.pitch ? basicContent(metahuman, setProperty) : '',
+      children: metahuman.name ? basicContent(metahuman, setProperty) : '',
     },
     {
       key: '2',
@@ -122,17 +121,20 @@ function MetahumanDetail() {
     },
   ];
 
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.hostname}/conversation/${param.id}`);
+      messageApi.open({
+        type: 'success',
+        content: 'Share link copied!',
+      });
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
   return (
     <div>
-      <div style={{ margin: '10px 10px 0' }}>
-        <Button
-          type="link"
-          style={{ background: 'none' }}
-          size={'large'}
-          shape="circle"
-          icon={<LeftOutlined />}
-        />
-      </div>
       <div className={styles.flexbox}>
         {/* Avatar */}
         <div style={{ marginRight: '26px' }}>
@@ -149,11 +151,27 @@ function MetahumanDetail() {
         </div>
         {/* Name & Description */}
         <div>
-          <div className={styles.title}>{ metahuman.name }</div>
-          <div className={styles.subtitle}>{ metahuman.subname || '-' }</div>
+          <Paragraph 
+            className={styles.title}
+            editable={{
+              onChange: (value) => setProperty('name', value),
+              text: metahuman.name,
+            }}
+          >
+            { metahuman.name }
+          </Paragraph>
+          <Paragraph 
+            className={styles.subtitle}
+            editable={{
+              onChange: (value) => setProperty('subname', value),
+              text: metahuman.subname,
+            }}
+          >
+            { metahuman.subname || '-' }
+          </Paragraph>
           <Link
             target="_blank"
-            style={{ position: 'relative', top: '23px' }}
+            style={{ position: 'relative', top: '5px' }}
             onClick={() => setIsModalOpen(true)}
           >
             Edit Avatar
@@ -168,7 +186,7 @@ function MetahumanDetail() {
             onCancel={() => setIsModalOpen(false)}
           >
             <AvatarCreator 
-              subdomain="oasis-batslo" 
+              subdomain="aiaustin" 
               // subdomain="demo" 
               config={config} 
               style={{ width: '100%', height: '520px', border: 'none' }} 
@@ -179,11 +197,8 @@ function MetahumanDetail() {
         {/* Action Buttons */}
         <div style={{ flex: 1, textAlign: 'right', paddingTop: '15px' }}>
           <Space>
-            <Button shape="round" icon={<ShareAltOutlined />}>
+            <Button shape="round" icon={<ShareAltOutlined />} onClick={() => copyLink()}>
               Share
-            </Button>
-            <Button shape="round" icon={<MessageOutlined />}>
-              Chat
             </Button>
             <Button loading={saving} type="primary" shape="round" icon={<SaveOutlined />} onClick={() => updateMetahumanDetail()}>
               Save

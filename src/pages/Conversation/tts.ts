@@ -15,7 +15,9 @@ const speechConfig = SpeechConfig.fromSubscription(identityKey, region);
 export const TextToSpeech = (
   unityContext: UnityContext,
   content: string,
-  speaker: string
+  speaker: string,
+  speed: number,
+  pitch: number
 ) => {
   // Customize speak fomat.
   speechConfig.speechSynthesisOutputFormat = SpeechSynthesisOutputFormat['Riff16Khz16BitMonoPcm'];
@@ -23,12 +25,10 @@ export const TextToSpeech = (
   const pullStream = PullAudioOutputStream.createPullStream();
   const audioConfig = AudioConfig.fromStreamOutput(pullStream);
 
-  speechConfig.speechSynthesisVoiceName = speaker;
-
   // Create the speech synthesizer.
   const synthesizer: any = new SpeechSynthesizer(speechConfig, audioConfig);
-  synthesizer.speakTextAsync(
-    content,
+  synthesizer.speakSsmlAsync(
+    ssmGenerator(content, speaker, speed, pitch),
     async (result: any) => {
       if (result.reason === ResultReason.SynthesizingAudioCompleted) {
         const audioData = result.audioData; // ArrayBuffer format

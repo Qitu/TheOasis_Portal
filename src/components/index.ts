@@ -7,7 +7,6 @@
  */
 import Footer from './Footer';
 import Metahuman from './Metahuman';
-import { Question, SelectLang } from './RightContent';
 import { AvatarDropdown, AvatarName } from './RightContent/AvatarDropdown';
 
-export { AvatarDropdown, AvatarName, Footer, Metahuman, Question, SelectLang };
+export { AvatarDropdown, AvatarName, Footer, Metahuman,  };

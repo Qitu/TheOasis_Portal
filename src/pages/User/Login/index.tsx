@@ -170,7 +170,7 @@ const Login: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" src="/logo.svg" />}
+          logo={<img alt="logo" src="/logo.png" />}
           title="Oasis: A MetaHuman Platform"
           subTitle=""
           initialValues={{

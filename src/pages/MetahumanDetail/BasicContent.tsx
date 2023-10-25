@@ -21,12 +21,12 @@ const { Title } = Typography;
 function BasicContent(data: any, setProp: any) {
   // const [voices, setVoices] = useState([]);
   return (
-    <div style={{ marginTop: '-16px', padding: '20px 20px', background: 'rgb(250, 248, 245)' }}>
+    <div style={{ marginTop: '-16px', padding: '20px 20px', background: 'rgba(255,255,255,0.56)' }}>
       <Row gutter={16}>
         <Col xs={24} md={15} span={15}>
           <strong style={{ lineHeight: '36px' }}>
             Core description
-            <Tooltip title="prompt text">
+            <Tooltip title="Characterize the Metahuman's personality (you can use the variables provided on the right side for a detailed description).">
               <QuestionCircleOutlined style={{ marginLeft: '10px' }} />
             </Tooltip>
           </strong>
@@ -38,19 +38,16 @@ function BasicContent(data: any, setProp: any) {
             <Title level={5}>Available Variables</Title>
             <Space direction="vertical">
               <div>
-                <Tag color="red">&#123; time &#125;</Tag>代表当前时间 
+                <Tag color="red">&#123;character&#125;</Tag>represents the Metahuman 
               </div>
               <div>
-                <Tag color="red">&#123; time &#125;</Tag>代表当前时间
+                <Tag color="orange">&#123;time&#125;</Tag>represents the current time 
               </div>
               <div>
-                <Tag color="green">&#123; time &#125;</Tag>代表当前时间
+                <Tag color="green">&#123;user&#125;</Tag>represents the chat user
               </div>
               <div>
-                <Tag color="blue">&#123; time &#125;</Tag>代表当前时间
-              </div>
-              <div>
-                <Tag color="red">&#123; time &#125;</Tag>代表当前时间
+                <Tag color="blue">&#123;random&#125;</Tag>represents a random number from 0 to 100
               </div>
             </Space>
           </Typography>
