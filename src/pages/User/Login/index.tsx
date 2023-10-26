@@ -227,7 +227,13 @@ const Login: React.FC = () => {
         },
       },
     );
-    console.log(msg);
+
+    if (msg.data.code === 200) {
+      message.success("Registration successful!");
+    } else {
+      message.error("Registration failed")
+    }
+
   };
 
   const { status, type: loginType } = userLoginState;
