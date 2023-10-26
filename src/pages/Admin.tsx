@@ -16,8 +16,24 @@ const Admin: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const intl = useIntl();
   let [cards, setCards] = useState(
-    [] as { mid: number; name: string; description: string; image: string; status: string }[],
+    [] as { mid: number; name: string; gender: string; category: string; description: string; image: string; status: string }[],
   );
+
+  const [nameFilter, setNameFilter] = useState('');
+  const [genderFilter, setGenderFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNameFilter(e.target.value);
+  };
+
+  const handleGenderChange = (value: string) => {
+    setGenderFilter(value);
+  };
+
+  const handleCategoryChange = (value: string) => {
+    setCategoryFilter(value);
+  };
 
   useEffect(() => {
     // get Metahuman card data from back-end and update the status
@@ -36,28 +52,36 @@ const Admin: React.FC = () => {
             name: 'Card 1',
             description: 'Content for card 1',
             image: 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png',
-            status: "online"
+            status: "online",
+            gender: "male",
+            category: "Superhuman"
           },
           {
             mid: 2,
             name: 'Card 2',
             description: 'Content for card 2',
             image: 'https://models.readyplayer.me/64e3055495439dfcf3f0b665.png',
-            status: "online"
+            status: "online",
+            gender: "male",
+            category: "Human"
           },
           {
             mid: 3,
             name: 'Card 3',
             description: 'Content for card 3',
             image: 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png',
-            status: "offline"
+            status: "offline",
+            gender: "female",
+            category: "Superhuman"
           },
           {
             mid: 4,
             name: 'Card 5',
             description: 'Content for card 4',
             image: 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png',
-            status: "offline"
+            status: "offline",
+            gender: "others",
+            category: "Freak"
           },
         ];
         arrayData[0].image = 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png';
@@ -78,12 +102,12 @@ const Admin: React.FC = () => {
           <Row gutter={[16, 16]}>
             <Col span={8}>
               <Form.Item label="Name">
-                <Input defaultValue="" style={{ width: '100%' }} />
+                <Input defaultValue="" style={{ width: '100%' }} onChange={handleNameChange} />
               </Form.Item>
             </Col>
             <Col span={8}>
               <Form.Item label="Gender">
-                <Select defaultValue="" style={{ width: '100%' }}>
+                <Select defaultValue="" style={{ width: '100%' }} onChange={handleGenderChange}>
                   <Option value="male">male</Option>
                   <Option value="female">female</Option>
                   <Option value="others">others</Option>
@@ -92,10 +116,10 @@ const Admin: React.FC = () => {
             </Col>
             <Col span={8}>
               <Form.Item label="Category">
-                <Select defaultValue="superhuman" style={{ width: '100%' }}>
-                  <Option value="superhuman">Superhuman</Option>
-                  <Option value="option2">选项2</Option>
-                  <Option value="option3">选项3</Option>
+                <Select defaultValue="" style={{ width: '100%' }} onChange={handleCategoryChange}>
+                  <Option value="Superhuman">Superhuman</Option>
+                  <Option value="Human">Human</Option>
+                  <Option value="Freak">Freak</Option>
                 </Select>
               </Form.Item>
             </Col>
@@ -104,20 +128,20 @@ const Admin: React.FC = () => {
       </Card>
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-        {' '}
-        {/* 使用 Row 和 Col 来布局卡片，gutter 设置卡片之间的间距 */}
-        {cards.map((card, index) => (
-          <Col span={8} key={index}>
-            {' '}
-            {/* 每行显示三个卡片，所以设置 Col 的 span 为 8 */}
-            <Metahuman
-              id={card.mid}
-              name={card.name}
-              description={card.description}
-              image={card.image}
-              status={card.status}
-            />
-          </Col>
+        {cards.filter(card =>
+            card.name.includes(nameFilter) &&
+            (genderFilter ? card.gender === genderFilter : true) &&
+            (categoryFilter ? card.category === categoryFilter : true)
+        ).map((card, index) => (
+            <Col span={8} key={index}>
+              <Metahuman
+                  id={card.mid}
+                  name={card.name}
+                  description={card.description}
+                  image={card.image}
+                  status={card.status}
+              />
+            </Col>
         ))}
       </Row>
 
