@@ -16,7 +16,7 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { FormattedMessage, Helmet, SelectLang, history, useModel } from '@umijs/max';
+import { Helmet, history, useModel } from '@umijs/max';
 import { Alert, Tabs, message } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -47,27 +47,6 @@ const ActionIcons = () => {
   );
 };
 
-const Lang = () => {
-  const langClassName = useEmotionCss(({ token }) => {
-    return {
-      width: 42,
-      height: 42,
-      lineHeight: '42px',
-      position: 'fixed',
-      right: 16,
-      borderRadius: token.borderRadius,
-      ':hover': {
-        backgroundColor: token.colorBgTextHover,
-      },
-    };
-  });
-
-  return (
-    <div className={langClassName} data-lang>
-      {SelectLang && <SelectLang />}
-    </div>
-  );
-};
 
 const LoginMessage: React.FC<{
   content: string;
@@ -145,7 +124,6 @@ const Login: React.FC = () => {
           - {Settings.title}
         </title>
       </Helmet>
-      <Lang />
       <div
         style={{
           flex: '1',
@@ -157,8 +135,8 @@ const Login: React.FC = () => {
             minWidth: 280,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" src="/logo.png" />}
-          title="Oasis: A MetaHuman Platform"
+          logo={<img alt="logo" src="/logo2.png" />}
+          title="Oasis"
           subTitle=""
           initialValues={{
             autoLogin: true,
@@ -183,7 +161,7 @@ const Login: React.FC = () => {
             items={[
               {
                 key: 'account',
-                label: 'Login via Username and Password',
+                label: 'Login',
               },
               // {
               //   key: 'mobile',
@@ -212,9 +190,7 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: (
-                      <FormattedMessage id="x" defaultMessage="Please enter your username!" />
-                    ),
+                    message: "Please enter your username!",
                   },
                 ]}
               />
@@ -228,9 +204,7 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: (
-                      <FormattedMessage id="x" defaultMessage="Please enter your password!" />
-                    ),
+                    message: "Please enter your password!",
                   },
                 ]}
               />
@@ -325,15 +299,13 @@ const Login: React.FC = () => {
               marginBottom: 24,
             }}
           >
-            <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="xxx" defaultMessage="Auto-login" />
-            </ProFormCheckbox>
+            <ProFormCheckbox noStyle name="autoLogin">Remember username</ProFormCheckbox>
             <a
               style={{
                 float: 'right',
               }}
             >
-              <FormattedMessage id="xxx" defaultMessage="Forgotten Password?" />
+              Forgotten Password?
             </a>
           </div>
         </LoginForm>
