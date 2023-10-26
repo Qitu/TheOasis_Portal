@@ -1,8 +1,11 @@
 import { LeftOutlined, MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { DescriptionsProps, TabsProps } from 'antd';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Button, Descriptions, Image, Space, Tabs, Typography, message } from 'antd';
 import advancedContent from './AdvancedContent';
 import basicContent from './BasicContent';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { quryMetahuman, metahumanBody } from './api';
 import styles from './index.less';
 import { useEffect, useState } from 'react';
@@ -12,7 +15,7 @@ import { parseInt } from 'lodash';
 const { Link } = Typography;
 
 
-  
+
 // interface VoiceRecorderProps {
 //     id: number // Metahuman ID
 // }
@@ -23,7 +26,7 @@ function MetahumanDetail() {
 
   const getMetahumanDetail = async (id: string) => {
     const data:any = await quryMetahuman(parseInt(id));
-    
+
     if (data.code === 200) {
       setMetahuman({
         ...data.object
