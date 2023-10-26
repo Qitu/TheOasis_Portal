@@ -5,7 +5,7 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
-import { Button, Card } from 'antd';
+import {Button, Card, Tooltip} from 'antd';
 import React from 'react';
 
 const Metahuman: React.FC<{
@@ -35,27 +35,32 @@ const Metahuman: React.FC<{
   const handleActivateOrDeactivate = () => {};
 
   return (
-    <Card
-      title={name}
-      bordered={false}
-      hoverable
-      style={{ width: 240 }}
-      cover={<img alt="example" src={image} />}
-      actions={
-        currentUserDetails?.access === 'admin'
-          ? [
-              <SettingOutlined key="setting" onClick={goToCardConfigPage} />,
-              <DeleteOutlined key="delete" onClick={handleDelete} />,
-              <Button key="activate-deactivate" onClick={handleActivateOrDeactivate}>
-                {is_active ? <CloseCircleOutlined /> : <CheckCircleOutlined />}
-                {is_active ? 'Deactivate' : 'Activate'}
-              </Button>,
-            ]
-          : []
-      }
-    >
-      {description}
-    </Card>
+      <Card
+          title={name}
+          bordered={false}
+          hoverable
+          style={{ width: 340 }}
+          cover={<img alt="example" src={image} />}
+          actions={
+              currentUserDetails?.access === 'admin'
+                  ? [
+                      <SettingOutlined key="setting" onClick={goToCardConfigPage} />,
+                      <DeleteOutlined key="delete" onClick={handleDelete} />,
+                      <Tooltip title={is_active ? "Deactivate" : "Activate"} key="activate-deactivate">
+                          <Button
+                              onClick={handleActivateOrDeactivate}
+                              style={{ backgroundColor: is_active ? 'green' : 'red' }}
+                          >
+                              {is_active ? <CheckCircleOutlined style={{ color: 'white' }}/> : <CloseCircleOutlined style={{ color: 'white' }}/>}
+                          </Button>
+                      </Tooltip>,
+                  ]
+                  : []
+          }
+      >
+          {description}
+      </Card>
+
   );
 };
 

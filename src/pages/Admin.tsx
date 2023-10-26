@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Metahuman from '@/components/Metahuman';
-import { Card, Col, Form, Row, Select } from 'antd';
+import {Card, Col, Form, Input, Row, Select} from 'antd';
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../utils/request';
 
@@ -24,10 +24,42 @@ const Admin: React.FC = () => {
     (async () => {
       try {
         const res = await axiosInstance.post('/sys/metahuman/list', {});
+        console.log(res)
 
-        let arrayData = res.data.obj;
+        // let arrayData = res.data.obj;
 
         // mock
+        // this is fake data
+        let arrayData = [
+          {
+            mid: 1,
+            name: 'Card 1',
+            description: 'Content for card 1',
+            image: 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png',
+            status: "online"
+          },
+          {
+            mid: 2,
+            name: 'Card 2',
+            description: 'Content for card 2',
+            image: 'https://models.readyplayer.me/64e3055495439dfcf3f0b665.png',
+            status: "online"
+          },
+          {
+            mid: 3,
+            name: 'Card 3',
+            description: 'Content for card 3',
+            image: 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png',
+            status: "offline"
+          },
+          {
+            mid: 4,
+            name: 'Card 5',
+            description: 'Content for card 4',
+            image: 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png',
+            status: "offline"
+          },
+        ];
         arrayData[0].image = 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png';
         arrayData[1].image = 'https://models.readyplayer.me/64e3055495439dfcf3f0b665.png';
 
@@ -41,41 +73,35 @@ const Admin: React.FC = () => {
   return (
     <PageContainer>
       {/* 选项框部分 */}
-      <Form layout="vertical">
-        {' '}
-        {/* 使用垂直布局 */}
-        <Row gutter={[16, 16]}>
-          <Col span={8}>
-            <Form.Item label="Gender">
-              {' '}
-              {/* 添加标签 */}
-              <Select defaultValue="male" style={{ width: '100%' }}>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="others">others</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="标签2">
-              <Select defaultValue="option1" style={{ width: '100%' }}>
-                <Option value="option1">选项1</Option>
-                <Option value="option2">选项2</Option>
-                <Option value="option3">选项3</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item label="标签3">
-              <Select defaultValue="option1" style={{ width: '100%' }}>
-                <Option value="option1">选项1</Option>
-                <Option value="option2">选项2</Option>
-                <Option value="option3">选项3</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+      <Card title="Filter the characters you want">
+        <Form layout="vertical">
+          <Row gutter={[16, 16]}>
+            <Col span={8}>
+              <Form.Item label="Name">
+                <Input defaultValue="" style={{ width: '100%' }} />
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label="Gender">
+                <Select defaultValue="" style={{ width: '100%' }}>
+                  <Option value="male">male</Option>
+                  <Option value="female">female</Option>
+                  <Option value="others">others</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label="Category">
+                <Select defaultValue="superhuman" style={{ width: '100%' }}>
+                  <Option value="superhuman">Superhuman</Option>
+                  <Option value="option2">选项2</Option>
+                  <Option value="option3">选项3</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Card>
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         {' '}
