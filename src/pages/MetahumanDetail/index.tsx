@@ -1,20 +1,18 @@
 import { LeftOutlined, MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { DescriptionsProps, TabsProps } from 'antd';
+import type { TabsProps } from 'antd';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Button, Descriptions, Image, Space, Tabs, Typography, message } from 'antd';
+import { Button, Descriptions, Image, Space, Tabs, Typography } from 'antd';
 import advancedContent from './AdvancedContent';
 import basicContent from './BasicContent';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { quryMetahuman, metahumanBody } from './api';
-import styles from './index.less';
+import { parseInt } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { parseInt } from 'lodash';
+import { quryMetahuman } from './api';
+import styles from './index.less';
 
 const { Link } = Typography;
-
-
 
 // interface VoiceRecorderProps {
 //     id: number // Metahuman ID
@@ -25,12 +23,12 @@ function MetahumanDetail() {
   const [descs, setDescs] = useState<any>([]);
 
   const getMetahumanDetail = async (id: string) => {
-    const data:any = await quryMetahuman(parseInt(id));
+    const data: any = await quryMetahuman(parseInt(id));
 
     if (data.code === 200) {
       setMetahuman({
-        ...data.object
-      })
+        ...data.object,
+      });
       setDescs([
         {
           key: '1',
@@ -52,8 +50,7 @@ function MetahumanDetail() {
           label: 'Last update',
           children: data.object.updateTime,
         },
-      ])
-
+      ]);
 
       console.log(data.object);
     } else {
@@ -64,7 +61,7 @@ function MetahumanDetail() {
   const param = useParams<any>();
 
   useEffect(() => {
-    getMetahumanDetail(param.id || "");
+    getMetahumanDetail(param.id || '');
   }, [name]);
 
   const tabItems: TabsProps['items'] = [
@@ -103,8 +100,8 @@ function MetahumanDetail() {
         </div>
         {/* Name & Description */}
         <div style={{}}>
-          <div className={styles.title}>{ metahuman.name }</div>
-          <div className={styles.subtitle}>{ metahuman.subname || '-' }</div>
+          <div className={styles.title}>{metahuman.name}</div>
+          <div className={styles.subtitle}>{metahuman.subname || '-'}</div>
           <Link
             href="https://ant.design"
             target="_blank"

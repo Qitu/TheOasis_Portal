@@ -22,12 +22,6 @@ export default [
       },
     ],
   },
-  // {
-  //   path: '/welcome',
-  //   name: 'Welcome',
-  //   icon: 'smile',
-  //   component: './Welcome',
-  // },
   {
     path: '/admin',
     name: 'Metahuman Configuration',
@@ -36,10 +30,10 @@ export default [
     component: './Admin',
   },
   {
-      path: '/metahuman/:id',
-      name: 'metahuman',
-      component: './MetahumanDetail/',
-      layout: false,
+    path: '/metahuman/:id',
+    name: 'metahuman',
+    component: './MetahumanDetail/',
+    layout: false,
   },
   // {
   //   name: 'list.table-list',

@@ -1,6 +1,5 @@
 // import { Footer } from '@/components';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { login } from '@/services/ant-design-pro/api';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -9,18 +8,14 @@ import {
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
-import {
-  LoginForm,
-  ProFormCheckbox,
-  ProFormText,
-} from '@ant-design/pro-components';
+import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, SelectLang, history, useIntl, useModel } from '@umijs/max';
 import { Alert, Tabs, message } from 'antd';
+import axios from 'axios';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
-import axios from "axios";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ActionIcons = () => {
@@ -85,7 +80,7 @@ const LoginMessage: React.FC<{
 };
 
 const Login: React.FC = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -104,7 +99,7 @@ const Login: React.FC = () => {
 
   const intl = useIntl();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fetchUserInfo = async () => {
     // Get user details
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -120,71 +115,71 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: API.LoginParams) => {
     // new login method
-    const msg_token = await axios.post('/auth/login',
-        { mobile: values.username, password: values.password },
-        {
-          headers: {
-              'Content-Type': 'application/json',
-          },
-        });
+    const msg_token = await axios.post(
+      '/auth/login',
+      { mobile: values.username, password: values.password },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
-    if (msg_token.data.message === "SUCCESS") {
-
+    if (msg_token.data.message === 'SUCCESS') {
       // user verification
       const user_token = msg_token.data.object;
-      const msg_user = await  axios.post('/auth/verify',
+      const msg_user = await axios.post(
+        '/auth/verify',
         { token: user_token },
         {
           headers: {
             'Content-Type': 'application/json',
           },
+        },
+      );
+
+      if (msg_user.data.message === 'SUCCESS') {
+        const defaultLoginSuccessMessage = intl.formatMessage({
+          id: 'xxx',
+          defaultMessage: 'Login Successful!',
         });
+        message.success(defaultLoginSuccessMessage);
 
-      if (msg_user.data.message === "SUCCESS") {
+        // get user details
+        const user_obj = msg_user.data.object;
+        const userInfo = {
+          uid: user_obj.uid,
+          name: user_obj.nickname,
+          access: user_obj.identity,
+          avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        };
 
-          const defaultLoginSuccessMessage = intl.formatMessage({
-              id: 'xxx',
-              defaultMessage: 'Login Successful!',
+        localStorage.setItem('currentUser', JSON.stringify(userInfo));
+        localStorage.setItem('userToken', user_token);
+
+        if (userInfo) {
+          flushSync(() => {
+            setInitialState((s) => ({
+              ...s,
+              currentUser: userInfo,
+            }));
           });
-          message.success(defaultLoginSuccessMessage);
+        }
 
-          // get user details
-          const user_obj = msg_user.data.object;
-          const userInfo = {
-              uid: user_obj.uid,
-              name: user_obj.nickname,
-              access: user_obj.identity,
-              avatar: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
-          }
-
-          localStorage.setItem('currentUser', JSON.stringify(userInfo));
-          localStorage.setItem('userToken', user_token)
-
-          if (userInfo) {
-              flushSync(() => {
-                  setInitialState((s) => ({
-                      ...s,
-                      currentUser: userInfo,
-                  }));
-              });
-          }
-
-          // if the current url have "redirect"
-          const urlParams = new URL(window.location.href).searchParams;
-          // admin or user
-          if (user_obj.identity === "admin") {
-              history.push(urlParams.get('redirect') || '/admin');
-          } else {
-              history.push(urlParams.get('redirect') || '/');
-          }
-          return;
-
+        // if the current url have "redirect"
+        const urlParams = new URL(window.location.href).searchParams;
+        // admin or user
+        if (user_obj.identity === 'admin') {
+          history.push(urlParams.get('redirect') || '/admin');
+        } else {
+          history.push(urlParams.get('redirect') || '/');
+        }
+        return;
       }
-
     } else {
       const defaultLoginFailureMessage = intl.formatMessage({
-          id: 'xxx',
-          defaultMessage: 'Login failed, please try again!',
+        id: 'xxx',
+        defaultMessage: 'Login failed, please try again!',
       });
       message.error(defaultLoginFailureMessage);
     }
@@ -221,16 +216,18 @@ const Login: React.FC = () => {
     // }
   };
 
-    const handleRegister = async (values: Record<string, any>) => {
-      const msg = await axios.post('/auth/register',
-          { mobile: values.mobile, nickname: values.username_set, password: values.password_set },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-      console.log(msg)
-    }
+  const handleRegister = async (values: Record<string, any>) => {
+    const msg = await axios.post(
+      '/auth/register',
+      { mobile: values.mobile, nickname: values.username_set, password: values.password_set },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    console.log(msg);
+  };
 
   const { status, type: loginType } = userLoginState;
 
@@ -275,19 +272,18 @@ const Login: React.FC = () => {
           onFinish={async (values) => {
             if (type === 'account') {
               // 当活动标签是 'account' 时调用登录函数
-                await handleSubmit(values as API.LoginParams);
+              await handleSubmit(values as API.LoginParams);
             } else if (type === 'mobile') {
               // 当活动标签是 'mobile' 时调用注册函数
               await handleRegister(values);
             }
-
           }}
           submitter={{
             searchConfig: {
-              submitText: type === 'account' ? 'Login' : 'Register'  // 根据活动标签动态设置按钮文本
-            } }}
+              submitText: type === 'account' ? 'Login' : 'Register', // 根据活动标签动态设置按钮文本
+            },
+          }}
         >
-
           <Tabs
             activeKey={type}
             onChange={setType}
@@ -333,9 +329,7 @@ const Login: React.FC = () => {
                 rules={[
                   {
                     required: true,
-                    message: (
-                      <FormattedMessage id="x" defaultMessage="Please enter your uid!" />
-                    ),
+                    message: <FormattedMessage id="x" defaultMessage="Please enter your uid!" />,
                   },
                 ]}
               />
@@ -361,7 +355,9 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="Email Verification Code Error!" />}
+          {status === 'error' && loginType === 'mobile' && (
+            <LoginMessage content="Email Verification Code Error!" />
+          )}
           {type === 'mobile' && (
             <>
               {/* set uid */}
@@ -397,29 +393,26 @@ const Login: React.FC = () => {
                 ]}
               />
 
-                {/* set username */}
-                <ProFormText
-                    fieldProps={{
-                        size: 'large',
-                        prefix: <UserOutlined />,
-                    }}
-                    name="username_set"
-                    placeholder={intl.formatMessage({
-                        id: 'xxx',
-                        defaultMessage: 'Please set your username',
-                    })}
-                    rules={[
-                        {
-                            required: true,
-                            message: (
-                                <FormattedMessage
-                                    id="xxx"
-                                    defaultMessage="Please set your username!"
-                                />
-                            ),
-                        }
-                    ]}
-                />
+              {/* set username */}
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined />,
+                }}
+                name="username_set"
+                placeholder={intl.formatMessage({
+                  id: 'xxx',
+                  defaultMessage: 'Please set your username',
+                })}
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage id="xxx" defaultMessage="Please set your username!" />
+                    ),
+                  },
+                ]}
+              />
 
               {/* set password */}
               <ProFormText
@@ -436,16 +429,11 @@ const Login: React.FC = () => {
                   {
                     required: true,
                     message: (
-                      <FormattedMessage
-                        id="xxx"
-                        defaultMessage="Please set your password!"
-                      />
+                      <FormattedMessage id="xxx" defaultMessage="Please set your password!" />
                     ),
                   },
                 ]}
-
               />
-
             </>
           )}
 

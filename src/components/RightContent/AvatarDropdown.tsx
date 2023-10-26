@@ -28,8 +28,8 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
     await outLogin();
 
     // remove localStorage
-    localStorage.removeItem('currentUser')
-    localStorage.removeItem('userToken')
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userToken');
 
     const { search, pathname } = window.location;
     const urlParams = new URL(window.location.href).searchParams;

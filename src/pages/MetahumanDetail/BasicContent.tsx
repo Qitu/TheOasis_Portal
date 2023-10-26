@@ -29,14 +29,18 @@ function BasicContent(data: any) {
             </Tooltip>
           </strong>
 
-          <TextArea value={data.description} placeholder="Basic usage" autoSize={{ minRows: 7, maxRows: 15 }} />
+          <TextArea
+            value={data.description}
+            placeholder="Basic usage"
+            autoSize={{ minRows: 7, maxRows: 15 }}
+          />
         </Col>
         <Col xs={12} md={9} span={9} style={{ marginTop: '10px' }}>
           <Typography>
             <Title level={5}>Available Variables</Title>
             <Space direction="vertical">
               <div>
-                <Tag color="red">&#123; time &#125;</Tag>代表当前时间 
+                <Tag color="red">&#123; time &#125;</Tag>代表当前时间
               </div>
               <div>
                 <Tag color="red">&#123; time &#125;</Tag>代表当前时间

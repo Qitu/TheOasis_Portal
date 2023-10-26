@@ -3,10 +3,10 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Metahuman from '@/components/Metahuman';
-import {Card, Col, Form, Row, Select} from 'antd';
+import { Card, Col, Form, Row, Select } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../utils/request'
+import axiosInstance from '../utils/request';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
@@ -21,35 +21,37 @@ const Admin: React.FC = () => {
   );
 
   useEffect(() => {
-
     // get Metahuman card data from back-end and update the status
     (async () => {
       try {
         const res = await axiosInstance.post('/sys/metahuman/list', {});
-        console.log(res)
+        console.log(res);
 
         const response = await axios.post('/sys/metahuman/list', {});
         let arrayData = response.data.obj;
 
         // mock
-        arrayData[0].image = "https://models.readyplayer.me/651e3c55dab353c6356989fe.png"
-        arrayData[1].image = "https://models.readyplayer.me/64e3055495439dfcf3f0b665.png"
+        arrayData[0].image = 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png';
+        arrayData[1].image = 'https://models.readyplayer.me/64e3055495439dfcf3f0b665.png';
 
         setCards(arrayData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     })();
-
   }, []);
 
   return (
     <PageContainer>
       {/* 选项框部分 */}
-      <Form layout="vertical"> {/* 使用垂直布局 */}
+      <Form layout="vertical">
+        {' '}
+        {/* 使用垂直布局 */}
         <Row gutter={[16, 16]}>
           <Col span={8}>
-            <Form.Item label="Gender"> {/* 添加标签 */}
+            <Form.Item label="Gender">
+              {' '}
+              {/* 添加标签 */}
               <Select defaultValue="male" style={{ width: '100%' }}>
                 <Option value="male">male</Option>
                 <Option value="female">female</Option>

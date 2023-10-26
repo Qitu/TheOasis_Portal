@@ -1,18 +1,17 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {AvatarDropdown, AvatarName, Question, SelectLang} from '@/components';
+import { AvatarDropdown, AvatarName, Question, SelectLang } from '@/components';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {Settings as LayoutSettings} from '@ant-design/pro-components';
+import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type {RunTimeLayoutConfig} from '@umijs/max';
+import type { RunTimeLayoutConfig } from '@umijs/max';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {history} from '@umijs/max';
+import { history } from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
-import {errorConfig} from './requestErrorConfig';
+import { errorConfig } from './requestErrorConfig';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
-
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -24,20 +23,19 @@ export async function getInitialState(): Promise<{
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fetchUserInfo = async () => {
     try {
       // if the current user exists
       // 从localStorage获取用户信息
       const currentUserStr = localStorage.getItem('currentUser');
-      return currentUserStr ? JSON.parse(currentUserStr) : null
+      return currentUserStr ? JSON.parse(currentUserStr) : null;
       // const msg = await queryCurrentUser({
       //   skipErrorHandler: true,
       // });
       // return msg.data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       history.push(loginPath);
     }
     return undefined;
