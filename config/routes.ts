@@ -48,10 +48,6 @@ export default [
   //   component: './TableList',
   // },
   {
-    path: '/',
-    redirect: '/admin',
-  },
-  {
     path: '*',
     layout: false,
     component: './404',
