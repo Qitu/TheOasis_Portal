@@ -22,6 +22,8 @@ The Oiasis of Metahuman
     <a href="https://github.com/Qitu/TheOasis_Portal/issues">Admin panel</a>
   </p>
 
+</p>
+
 ## Content
 
 - [Installation](#Installation)

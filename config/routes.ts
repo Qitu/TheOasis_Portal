@@ -35,6 +35,12 @@ export default [
     access: 'canAdmin',
     component: './Admin',
   },
+  {
+      path: '/metahuman/:id',
+      name: 'metahuman',
+      component: './MetahumanDetail/',
+      layout: false,
+  },
   // {
   //   name: 'list.table-list',
   //   icon: 'table',
@@ -44,12 +50,6 @@ export default [
   {
     path: '/',
     redirect: '/admin',
-  },
-  {
-    name: 'Metahuman Character Details',
-    path: '/character-details/:characterID',
-    component: './MetahumanDetails',
-    hideInMenu: true,
   },
   {
     path: '*',

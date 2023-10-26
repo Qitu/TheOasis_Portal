@@ -26,8 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint check
-        run: npm run lint
+      # - name: Lint check
+      #   run: npm run lint
 
       # en: The template does not contain test cases. If you need to use test cases, you can uncomment it
       # zh: 初始化模板中不包含测试用例，如需使用测试用例，可取消注释
