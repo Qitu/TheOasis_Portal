@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080',
   timeout: 5000,
   responseType: 'json',
   headers: {
@@ -13,7 +12,8 @@ instance.interceptors.request.use(
   (config) => {
     // 在发送请求之前做些什么，例如设置token
     config.headers = config.headers || {};
-    config.headers.Authorization = localStorage.getItem('userToken') || '';
+    config.headers.AuthToken = localStorage.getItem('userToken') || '';
+    console.log(config)
     return config;
   },
   (error) => {

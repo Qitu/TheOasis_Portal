@@ -4,7 +4,6 @@ import { useIntl } from '@umijs/max';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Metahuman from '@/components/Metahuman';
 import { Card, Col, Form, Row, Select } from 'antd';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../utils/request';
 
@@ -25,10 +24,8 @@ const Admin: React.FC = () => {
     (async () => {
       try {
         const res = await axiosInstance.post('/sys/metahuman/list', {});
-        console.log(res);
 
-        const response = await axios.post('/sys/metahuman/list', {});
-        let arrayData = response.data.obj;
+        let arrayData = res.data.obj;
 
         // mock
         arrayData[0].image = 'https://models.readyplayer.me/651e3c55dab353c6356989fe.png';

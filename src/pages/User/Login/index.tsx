@@ -138,7 +138,7 @@ const Login: React.FC = () => {
         },
       );
 
-      if (msg_user.data.message === 'SUCCESS') {
+      if (msg_user.status === 200) {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'xxx',
           defaultMessage: 'Login Successful!',
@@ -146,7 +146,8 @@ const Login: React.FC = () => {
         message.success(defaultLoginSuccessMessage);
 
         // get user details
-        const user_obj = msg_user.data.object;
+        const user_obj = msg_user.data;
+
         const userInfo = {
           uid: user_obj.uid,
           name: user_obj.nickname,
