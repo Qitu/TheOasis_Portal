@@ -1,6 +1,6 @@
 import { Descriptions, Radio, Switch, Select } from 'antd';
 
-const categories = [
+export const categories = [
   {label: 'Teacher', value: 'Teacher'},
   {label: 'Student', value: 'Student'},
   {label: 'Researcher', value: 'Researcher'},

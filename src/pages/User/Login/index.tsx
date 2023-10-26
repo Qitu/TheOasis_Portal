@@ -118,12 +118,6 @@ const Login: React.FC = () => {
 
   return (
     <div className={containerClassName}>
-      <Helmet>
-        <title>
-          {'Login Page'}
-          - {Settings.title}
-        </title>
-      </Helmet>
       <div
         style={{
           flex: '1',
