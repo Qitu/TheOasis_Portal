@@ -120,7 +120,7 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (values: API.LoginParams) => {
     // new login method
-    const msg = await axios.post('/login/doLogin',
+    const msg_token = await axios.post('/auth/login',
         { mobile: values.username, password: values.password },
         {
           headers: {
@@ -128,43 +128,58 @@ const Login: React.FC = () => {
           },
         });
 
-    if (msg.data.message === "SUCCESS") {
+    if (msg_token.data.message === "SUCCESS") {
 
-      const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'xxx',
-          defaultMessage: 'Login Successful!',
-      });
-      message.success(defaultLoginSuccessMessage);
-
-      // get user details
-      const user_obj = msg.data.object;
-      const userInfo = {
-          uid: user_obj.uid,
-          name: user_obj.nickname,
-          access: user_obj.identity,
-          avatar: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
-      }
-
-      localStorage.setItem('currentUser', JSON.stringify(userInfo));
-
-      if (userInfo) {
-        flushSync(() => {
-          setInitialState((s) => ({
-              ...s,
-              currentUser: userInfo,
-          }));
+      // user verification
+      const user_token = msg_token.data.object;
+      const msg_user = await  axios.post('/auth/verify',
+        { token: user_token },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
         });
-      }
 
-      // if the current url have "redirect"
-      const urlParams = new URL(window.location.href).searchParams;
-      // admin or user
-      if (user_obj.identity === "admin") {
-          history.push(urlParams.get('redirect') || '/admin');
-      } else {
-          history.push(urlParams.get('redirect') || '/');
+      if (msg_user.data.message === "SUCCESS") {
+
+          const defaultLoginSuccessMessage = intl.formatMessage({
+              id: 'xxx',
+              defaultMessage: 'Login Successful!',
+          });
+          message.success(defaultLoginSuccessMessage);
+
+          // get user details
+          const user_obj = msg_user.data.object;
+          const userInfo = {
+              uid: user_obj.uid,
+              name: user_obj.nickname,
+              access: user_obj.identity,
+              avatar: "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png",
+          }
+
+          localStorage.setItem('currentUser', JSON.stringify(userInfo));
+          localStorage.setItem('userToken', user_token)
+
+          if (userInfo) {
+              flushSync(() => {
+                  setInitialState((s) => ({
+                      ...s,
+                      currentUser: userInfo,
+                  }));
+              });
+          }
+
+          // if the current url have "redirect"
+          const urlParams = new URL(window.location.href).searchParams;
+          // admin or user
+          if (user_obj.identity === "admin") {
+              history.push(urlParams.get('redirect') || '/admin');
+          } else {
+              history.push(urlParams.get('redirect') || '/');
+          }
+          return;
+
       }
-      return;
 
     } else {
       const defaultLoginFailureMessage = intl.formatMessage({
@@ -207,7 +222,7 @@ const Login: React.FC = () => {
   };
 
     const handleRegister = async (values: Record<string, any>) => {
-      const msg = await axios.post('/login/doRegister',
+      const msg = await axios.post('/auth/register',
           { mobile: values.mobile, nickname: values.username_set, password: values.password_set },
           {
             headers: {

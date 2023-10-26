@@ -6,6 +6,7 @@ import Metahuman from '@/components/Metahuman';
 import {Card, Col, Form, Row, Select} from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axiosInstance from '../utils/request'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { Meta } = Card;
@@ -24,6 +25,8 @@ const Admin: React.FC = () => {
     // get Metahuman card data from back-end and update the status
     (async () => {
       try {
+        const res = await axiosInstance.post('/sys/metahuman/list', {});
+
         const response = await axios.post('/sys/metahuman/list', {});
         let arrayData = response.data.obj;
 
