@@ -26,6 +26,7 @@ const Admin: React.FC = () => {
     (async () => {
       try {
         const res = await axiosInstance.post('/sys/metahuman/list', {});
+        console.log(res)
 
         const response = await axios.post('/sys/metahuman/list', {});
         let arrayData = response.data.obj;
