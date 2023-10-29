@@ -11,6 +11,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { FormattedMessage, useIntl } from '@umijs/max';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';

@@ -1,6 +1,5 @@
 // import { Footer } from '@/components';
-import { login } from '@/services/ant-design-pro/api';
-// import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -9,15 +8,11 @@ import {
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
-import {
-  LoginForm,
-  // ProFormCaptcha,
-  ProFormCheckbox,
-  ProFormText,
-} from '@ant-design/pro-components';
+import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Helmet, history, useModel } from '@umijs/max';
 import { Alert, Tabs, message } from 'antd';
+import axios from 'axios';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
@@ -64,6 +59,7 @@ const LoginMessage: React.FC<{
 };
 
 const Login: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -81,6 +77,7 @@ const Login: React.FC = () => {
   });
 
   const fetchUserInfo = async () => {
+    // Get user details
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
       flushSync(() => {
@@ -93,27 +90,120 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = async (values: API.LoginParams) => {
-    try {
-      // 登录
-      const msg = await login({ ...values, type });
+    // new login method
+    const msg_token = await axios.post(
+      '/auth/login',
+      { mobile: values.username, password: values.password },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
 
-      if (msg.status === 'ok') {
+    if (msg_token.data.message === 'SUCCESS') {
+      // user verification
+      const user_token = msg_token.data.object;
+      const msg_user = await axios.post(
+        '/auth/verify',
+        { token: user_token },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      if (msg_user.status === 200) {
         message.success('Login Successful!');
-        await fetchUserInfo();
+
+        // get user details
+        const user_obj = msg_user.data;
+
+        const userInfo = {
+          uid: user_obj.uid,
+          name: user_obj.nickname,
+          access: user_obj.identity,
+          avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        };
+
+        localStorage.setItem('currentUser', JSON.stringify(userInfo));
+        localStorage.setItem('userToken', user_token);
+
+        if (userInfo) {
+          flushSync(() => {
+            setInitialState((s) => ({
+              ...s,
+              currentUser: userInfo,
+            }));
+          });
+        }
+
         // if the current url have "redirect"
         const urlParams = new URL(window.location.href).searchParams;
         // admin or user
-        history.push(urlParams.get('redirect') || '/');
+        if (user_obj.identity === 'admin') {
+          history.push(urlParams.get('redirect') || '/admin');
+        } else {
+          history.push(urlParams.get('redirect') || '/');
+        }
         return;
       }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
-    } catch (error) {
-      console.log(error);
+    } else {
       message.error('Login failed, please try again!');
     }
+
+    // old login method
+    // try {
+    //   // 登录
+    //   const msg = await login({ ...values, type });
+    //
+    //   if (msg.status === 'ok') {
+    //     const defaultLoginSuccessMessage = intl.formatMessage({
+    //       id: 'xxx',
+    //       defaultMessage: 'Login Successful!',
+    //     });
+    //     message.success(defaultLoginSuccessMessage);
+    //     await fetchUserInfo();
+    //     // if the current url have "redirect"
+    //     const urlParams = new URL(window.location.href).searchParams;
+    //     // admin or user
+    //     history.push(urlParams.get('redirect') || '/');
+    //     return;
+    //   }
+    //
+    //   console.log(msg);
+    //   // 如果失败去设置用户错误信息
+    //   setUserLoginState(msg);
+    // } catch (error) {
+    //   const defaultLoginFailureMessage = intl.formatMessage({
+    //     id: 'xxx',
+    //     defaultMessage: 'Login failed, please try again!',
+    //   });
+    //   console.log(error);
+    //   message.error(defaultLoginFailureMessage);
+    // }
   };
+
+  const handleRegister = async (values: Record<string, any>) => {
+    const msg = await axios.post(
+      '/auth/register',
+      { mobile: values.mobile, nickname: values.username_set, password: values.password_set },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (msg.data.code === 200) {
+      message.success("Registration successful!");
+    } else {
+      message.error("Registration failed")
+    }
+
+  };
+
   const { status, type: loginType } = userLoginState;
 
   return (
@@ -126,7 +216,7 @@ const Login: React.FC = () => {
       >
         <LoginForm
           contentStyle={{
-            minWidth: 280,
+            minWidth: 380,
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo2.png" />}
@@ -143,10 +233,21 @@ const Login: React.FC = () => {
           //   />,
           //   <ActionIcons key="icons" />,
           // ]}
+
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            if (type === 'account') {
+              // 当活动标签是 'account' 时调用登录函数
+              await handleSubmit(values as API.LoginParams);
+            } else if (type === 'mobile') {
+              // 当活动标签是 'mobile' 时调用注册函数
+              await handleRegister(values);
+            }
           }}
-          submitter={{ searchConfig: { submitText: 'Login' } }}
+          submitter={{
+            searchConfig: {
+              submitText: type === 'account' ? 'Login' : 'Register', // 根据活动标签动态设置按钮文本
+            },
+          }}
         >
           <Tabs
             activeKey={type}
@@ -157,13 +258,6 @@ const Login: React.FC = () => {
                 key: 'account',
                 label: 'Login',
               },
-              // {
-              //   key: 'mobile',
-              //   label: intl.formatMessage({
-              //     id: 'xxx',
-              //     defaultMessage: 'Login via NUS Email',
-              //   }),
-              // },
             ]}
           />
 
@@ -205,89 +299,65 @@ const Login: React.FC = () => {
             </>
           )}
 
-          {/*{status === 'error' && loginType === 'mobile' && <LoginMessage content="Email Verification Code Error!" />}*/}
-          {/*{type === 'mobile' && (*/}
-          {/*  <>*/}
-          {/*    <ProFormText*/}
-          {/*      fieldProps={{*/}
-          {/*        size: 'large',*/}
-          {/*        prefix: <UserOutlined />,*/}
-          {/*      }}*/}
-          {/*      name="mobile"*/}
-          {/*      addonAfter="@u.nus.edu"*/}
-          {/*      placeholder={intl.formatMessage({*/}
-          {/*        id: 'xxx',*/}
-          {/*        defaultMessage: 'NUS Email Address',*/}
-          {/*      })}*/}
-          {/*      rules={[*/}
-          {/*        {*/}
-          {/*          required: true,*/}
-          {/*          message: (*/}
-          {/*            <FormattedMessage*/}
-          {/*              id="xxx"*/}
-          {/*              defaultMessage="Please input your NUS email address!"*/}
-          {/*            />*/}
-          {/*          ),*/}
-          {/*        },*/}
-          {/*        // {*/}
-          {/*        //   pattern: /^1\d{10}$/,*/}
-          {/*        //   message: (*/}
-          {/*        //     <FormattedMessage*/}
-          {/*        //       id="pages.login.phoneNumber.invalid"*/}
-          {/*        //       defaultMessage="手机号格式错误！"*/}
-          {/*        //     />*/}
-          {/*        //   ),*/}
-          {/*        // },*/}
-          {/*      ]}*/}
-          {/*    />*/}
-          {/*    <ProFormCaptcha*/}
-          {/*      fieldProps={{*/}
-          {/*        size: 'large',*/}
-          {/*        prefix: <LockOutlined />,*/}
-          {/*      }}*/}
-          {/*      captchaProps={{*/}
-          {/*        size: 'large',*/}
-          {/*      }}*/}
-          {/*      placeholder={intl.formatMessage({*/}
-          {/*        id: 'xxx',*/}
-          {/*        defaultMessage: 'Please enter the verification code!',*/}
-          {/*      })}*/}
-          {/*      captchaTextRender={(timing, count) => {*/}
-          {/*        if (timing) {*/}
-          {/*          return `${count} ${intl.formatMessage({*/}
-          {/*            id: 'xxx',*/}
-          {/*            defaultMessage: 'Get a verification code',*/}
-          {/*          })}`;*/}
-          {/*        }*/}
-          {/*        return intl.formatMessage({*/}
-          {/*          id: 'xxx',*/}
-          {/*          defaultMessage: 'Get a verification code',*/}
-          {/*        });*/}
-          {/*      }}*/}
-          {/*      name="captcha"*/}
-          {/*      rules={[*/}
-          {/*        {*/}
-          {/*          required: true,*/}
-          {/*          message: (*/}
-          {/*            <FormattedMessage*/}
-          {/*              id="xxx"*/}
-          {/*              defaultMessage="Please enter the verification code!"*/}
-          {/*            />*/}
-          {/*          ),*/}
-          {/*        },*/}
-          {/*      ]}*/}
-          {/*      onGetCaptcha={async (phone) => {*/}
-          {/*        const result = await getFakeCaptcha({*/}
-          {/*          phone,*/}
-          {/*        });*/}
-          {/*        if (!result) {*/}
-          {/*          return;*/}
-          {/*        }*/}
-          {/*        message.success('Successfully get the verification code!');*/}
-          {/*      }}*/}
-          {/*    />*/}
-          {/*  </>*/}
-          {/*)}*/}
+          {status === 'error' && loginType === 'mobile' && (
+            <LoginMessage content="Email Verification Code Error!" />
+          )}
+          {type === 'mobile' && (
+            <>
+              {/* set uid */}
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined />,
+                }}
+                name="mobile"
+                placeholder={'Please enter your phone number as the uid'}
+                rules={[
+                  {
+                    required: true,
+                    message: ("Please enter your phone number as the uid!"),
+                  },
+                  {
+                    pattern: /^1\d{10}$/,
+                    message: ("The phone number format is incorrect!"),
+                  },
+                ]}
+              />
+
+              {/* set username */}
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <UserOutlined />,
+                }}
+                name="username_set"
+                placeholder={'Please set your username'}
+                rules={[
+                  {
+                    required: true,
+                    message: ("Please set your username!"),
+                  },
+                ]}
+              />
+
+              {/* set password */}
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined />,
+                }}
+                placeholder={'Please set your password'}
+                name="password_set"
+                rules={[
+                  {
+                    required: true,
+                    message: ("Please set your password!"),
+                  },
+                ]}
+              />
+            </>
+          )}
+
           <div
             style={{
               marginBottom: 24,

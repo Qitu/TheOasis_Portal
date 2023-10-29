@@ -19,20 +19,28 @@ const loginPath = '/user/login';
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
+  isLoggedIn?: boolean;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fetchUserInfo = async () => {
     try {
-      const msg = await queryCurrentUser({
-        skipErrorHandler: true,
-      });
-      return msg.data;
+      // if the current user exists
+      // 从localStorage获取用户信息
+      const currentUserStr = localStorage.getItem('currentUser');
+      return currentUserStr ? JSON.parse(currentUserStr) : null;
+      // const msg = await queryCurrentUser({
+      //   skipErrorHandler: true,
+      // });
+      // return msg.data;
     } catch (error) {
+      console.log(error);
       history.push(loginPath);
     }
     return undefined;
   };
+
   // 如果不是登录页面，执行
   const { location } = history;
   if (location.pathname !== loginPath) {

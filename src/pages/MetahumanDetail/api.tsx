@@ -19,17 +19,17 @@ export async function updateMetahuman(id:number, data: any) {
   }
   
 export interface metahumanBody {
-    category: string;
-    createTime: string;
-    description: string;
-    emotion: string;
-    gender: string;
-    name: string;
-    pitch: number;
-    speaker: string;
-    speed: number;
-    status: string;
-    subname: string;
-    updateTime: string;
-    voicesource: string;
+  category: string;
+  createTime: string;
+  description: string;
+  emotion: string;
+  gender: string;
+  name: string;
+  pitch: number;
+  speaker: string;
+  speed: number;
+  status: string;
+  subname: string;
+  updateTime: string;
+  voicesource: string;
 }

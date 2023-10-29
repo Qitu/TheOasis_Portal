@@ -38,8 +38,8 @@ function MetahumanDetail() {
     if (data.code === 200) {
       data.object.status = data.object.status == 'online' ? true : false;
       setMetahuman({
-        ...data.object
-      })
+        ...data.object,
+      });
       setDescs([
         {
           key: '1',
@@ -97,7 +97,7 @@ function MetahumanDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getMetahumanDetail(param.id || "");
+    getMetahumanDetail(param.id || '');
   }, [name]);
 
   const setProperty = (keyName:string, value:any) => {
