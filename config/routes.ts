@@ -16,18 +16,17 @@
     component: './Conversation/',
   },
   {
-    path: '/Home',
-    name: 'Home',
-    // component: './Welcome',
-    component: './Conversation/',
-  },
-  {
     path: '/metahuman/:id',
     component: './MetahumanDetail/',
   },
   {
     path: '/',
-    redirect: '/admin',
+    redirect: '/home',
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: './Admin',
   },
   {
     path: '*',

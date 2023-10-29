@@ -13,7 +13,7 @@ type FieldType = {
 };
 
 
-const CreateMetahuman = () => {
+const CreateMetahuman = (successCallback: any) => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -36,7 +36,6 @@ const CreateMetahuman = () => {
       avatarid = '653a1e0c0935b38c908e7bca'
       speaker = 'en-AU-AnnetteNeural'
     }
-    console.log()
     const res = await createMetahumanAPI({
       ...values,
       avatarid,
@@ -45,14 +44,15 @@ const CreateMetahuman = () => {
       speed: 0,
       pitch: 0
     })
-    console.log(res)
+    setIsModalOpen(false);
+    successCallback()
   };
   
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-  return <div>
+  return <div style={{ display: 'inline'}}>
     <Button 
       type="dashed"
       icon={<PlusOutlined />}

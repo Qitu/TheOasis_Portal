@@ -70,7 +70,6 @@ function MetahumanDetail() {
 
   const updateMetahumanDetail = async () => {
     if(!param.id) return;
-    console.log(metahuman)
     const updateData = cloneDeep(metahuman)
     updateData.status = updateData.status ? 'online' : 'offline'
     setSaving(true)

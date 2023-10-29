@@ -28,6 +28,13 @@ export default {
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
     },
+    '/auth/': {
+      // 要代理的地址
+      target: 'http://ae951514fac0947afbfcea3750274851-97056776.us-east-1.elb.amazonaws.com:8080',
+      // 配置了这个可以从 http 代理到 https
+      // 依赖 origin 的功能可能需要这个，比如 cookie
+      changeOrigin: true,
+    },
   },
 
   /**

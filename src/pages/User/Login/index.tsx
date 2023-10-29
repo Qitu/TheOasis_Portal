@@ -100,8 +100,8 @@ const Login: React.FC = () => {
         },
       },
     );
-
-    if (msg_token.data.message === 'SUCCESS') {
+    console.log(msg_token)
+    if (msg_token.data.code === 200) {
       // user verification
       const user_token = msg_token.data.object;
       const msg_user = await axios.post(
@@ -152,37 +152,6 @@ const Login: React.FC = () => {
     } else {
       message.error('Login failed, please try again!');
     }
-
-    // old login method
-    // try {
-    //   // 登录
-    //   const msg = await login({ ...values, type });
-    //
-    //   if (msg.status === 'ok') {
-    //     const defaultLoginSuccessMessage = intl.formatMessage({
-    //       id: 'xxx',
-    //       defaultMessage: 'Login Successful!',
-    //     });
-    //     message.success(defaultLoginSuccessMessage);
-    //     await fetchUserInfo();
-    //     // if the current url have "redirect"
-    //     const urlParams = new URL(window.location.href).searchParams;
-    //     // admin or user
-    //     history.push(urlParams.get('redirect') || '/');
-    //     return;
-    //   }
-    //
-    //   console.log(msg);
-    //   // 如果失败去设置用户错误信息
-    //   setUserLoginState(msg);
-    // } catch (error) {
-    //   const defaultLoginFailureMessage = intl.formatMessage({
-    //     id: 'xxx',
-    //     defaultMessage: 'Login failed, please try again!',
-    //   });
-    //   console.log(error);
-    //   message.error(defaultLoginFailureMessage);
-    // }
   };
 
   const handleRegister = async (values: Record<string, any>) => {

@@ -6,6 +6,7 @@ export async function createMetahumanAPI(data: any) {
     data: API.CurrentUser;
   }>('/sys/metahuman/create', {
     method: 'POST',
+    headers: {AuthToken: localStorage.getItem('AuthToken') || ''},
     data
   });
 }

@@ -12,9 +12,9 @@ const Metahuman: React.FC<{
   id: number;
   name: string;
   description: string;
-  image: string;
+  avatarid: string;
   status: string;
-}> = ({ id, name, description, image, status }) => {
+}> = ({ id, name, description, avatarid, status }) => {
   const { initialState } = useModel('@@initialState');
 
   const currentUserDetails = initialState?.currentUser;
@@ -22,11 +22,11 @@ const Metahuman: React.FC<{
   const is_active = status === 'online';
 
   const goToCardConfigPage = () => {
-    history.push('/character-details/${id}', {
+    history.push(`/metahuman/${id}`, {
       id: id,
       name: name,
       description: description,
-      image: image,
+      avatarid: avatarid,
     });
   };
 
@@ -39,12 +39,13 @@ const Metahuman: React.FC<{
           title={name}
           bordered={false}
           hoverable
-          style={{ width: 340 }}
-          cover={<img alt="example" src={image} />}
+          // style={{ width: 340 }}
+          cover={<img alt="example" src={`https://models.readyplayer.me/${avatarid}.png`} />}
+          onClick={goToCardConfigPage} 
           actions={
               currentUserDetails?.access === 'admin'
                   ? [
-                      <SettingOutlined key="setting" onClick={goToCardConfigPage} />,
+                      <SettingOutlined key="setting" />,
                       <DeleteOutlined key="delete" onClick={handleDelete} />,
                       <Tooltip title={is_active ? "Deactivate" : "Activate"} key="activate-deactivate">
                           <Button
