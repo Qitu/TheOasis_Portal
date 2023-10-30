@@ -1,12 +1,11 @@
 import {
-  CheckCircleOutlined,
-  CloseCircleOutlined,
   DeleteOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
-import {Button, Card, Tooltip} from 'antd';
+import { Card, Popconfirm, Tag, message} from 'antd';
 import React from 'react';
+import axiosInstance from '../../utils/request';
 
 const Metahuman: React.FC<{
   id: number;
@@ -14,7 +13,8 @@ const Metahuman: React.FC<{
   description: string;
   avatarid: string;
   status: string;
-}> = ({ id, name, description, avatarid, status }) => {
+  deleteCallback: any;
+}> = ({ id, name, description, avatarid, status, deleteCallback }) => {
   const { initialState } = useModel('@@initialState');
 
   const currentUserDetails = initialState?.currentUser;
@@ -22,7 +22,8 @@ const Metahuman: React.FC<{
   const is_active = status === 'online';
 
   const goToCardConfigPage = () => {
-    history.push(`/metahuman/${id}`, {
+    const targetPath = currentUserDetails?.access === 'admin' ? `/metahuman/${id}` : `conversation/${id}`
+    history.push(targetPath, {
       id: id,
       name: name,
       description: description,
@@ -30,36 +31,57 @@ const Metahuman: React.FC<{
     });
   };
 
-  const handleDelete = () => {};
-
-  const handleActivateOrDeactivate = () => {};
+  const handleDelete = async (id: number) => {
+    const deleteRes = await axiosInstance.delete('/sys/metahuman/' + id)
+    if(deleteRes.data && deleteRes.data.code === 200) {
+      deleteCallback();
+    } else {
+      message.error(deleteRes.data ? deleteRes.data.message : 'Metahuman delete failed');
+    }
+  }
 
   return (
       <Card
-          title={name}
           bordered={false}
           hoverable
-          // style={{ width: 340 }}
-          cover={<img alt="example" src={`https://models.readyplayer.me/${avatarid}.png`} />}
-          onClick={goToCardConfigPage} 
+          cover={<img alt="metahumanImg" src={`https://models.readyplayer.me/${avatarid}.png`} />}
+          
           actions={
-              currentUserDetails?.access === 'admin'
-                  ? [
-                      <SettingOutlined key="setting" />,
-                      <DeleteOutlined key="delete" onClick={handleDelete} />,
-                      <Tooltip title={is_active ? "Deactivate" : "Activate"} key="activate-deactivate">
-                          <Button
-                              onClick={handleActivateOrDeactivate}
-                              style={{ backgroundColor: is_active ? 'green' : 'red' }}
-                          >
-                              {is_active ? <CheckCircleOutlined style={{ color: 'white' }}/> : <CloseCircleOutlined style={{ color: 'white' }}/>}
-                          </Button>
-                      </Tooltip>,
-                  ]
-                  : []
+            currentUserDetails?.access === 'admin'
+                ? [
+                    <div onClick={goToCardConfigPage} >
+                      <SettingOutlined style={{ marginRight: '10px' }}/>
+                    </div>
+                    ,
+                    <Popconfirm
+                      title="Delete the metahuman"
+                      description="Are you sure you want to delete this metahuman?"
+                      onConfirm={() => {handleDelete(id)}}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <DeleteOutlined key="delete" />
+                    </Popconfirm>
+                ]
+                : []
           }
       >
-          {description}
+        { 
+          is_active 
+          ? 
+            '' 
+          : 
+            <div style={{ position: 'absolute', top: '15px' }}>
+              <Tag bordered={false}>Draft</Tag>
+            </div>
+        }
+        
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '24px' }}>
+            {name}
+          </div>
+          <div style={{ color: 'grey' }}>{description || '---'}</div>
+        </div>
       </Card>
 
   );

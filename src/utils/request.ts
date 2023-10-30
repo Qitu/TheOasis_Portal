@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { message } from 'antd';
 
 const instance = axios.create({
   timeout: 5000,
@@ -28,6 +29,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     // 处理响应错误
+    message.error('[Network Error] ' + error);
     return Promise.reject(error);
   },
 );

@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AvatarDropdown } from '@/components';
-import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
+// import { currentUser as queryCurrentUser } from '@/services/ant-design-pro/api';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,10 +18,10 @@ const loginPath = '/user/login';
  * */
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: any;
   isLoggedIn?: boolean;
   loading?: boolean;
-  fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
+  fetchUserInfo?: () => Promise<any | undefined>;
 }> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fetchUserInfo = async () => {
@@ -64,15 +64,11 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     actionsRender: () => [],
     avatarProps: {
       src: '/logo2.png',
-      title:'Admin',
+      title: initialState?.currentUser.access == 'admin' ? 'Admin' : 'User',
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
-    // waterMarkProps: {
-    //   content: initialState?.currentUser?.name,
-    // },
-    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login

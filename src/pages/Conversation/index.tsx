@@ -56,7 +56,7 @@ function Conversation() {
   useEffect(function () {
     getMetahumanDetail(param.id || "");
     unityContext.on('InitFinished', function () {
-      unityContext.send('EventSystem', 'loadPlayer', param.id);
+      unityContext.send('EventSystem', 'loadPlayer', param.id + ';' + (localStorage.getItem('AuthToken') || '')); 
     });
     unityContext.on('SetUpFinished', function () {
       console.log('Loaded.');
@@ -71,7 +71,6 @@ function Conversation() {
 
   useEffect(function () {
     unityContext.on('SpeakVoice', function (content: string) {
-      // console.log('Start speak' + content);
       TextToSpeech(unityContext, content, metahuman.speaker, metahuman.speed, metahuman.pitch);
     });
   }, [metahuman]);

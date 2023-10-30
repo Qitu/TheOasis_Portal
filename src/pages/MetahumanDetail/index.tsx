@@ -122,7 +122,7 @@ function MetahumanDetail() {
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(`${window.location.hostname}/conversation/${param.id}`);
+      await navigator.clipboard.writeText(`${window.location.hostname}:8000/conversation/${param.id}`);
       messageApi.open({
         type: 'success',
         content: 'Share link copied!',

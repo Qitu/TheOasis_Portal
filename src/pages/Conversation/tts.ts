@@ -30,6 +30,7 @@ export const TextToSpeech = (
   synthesizer.speakSsmlAsync(
     ssmGenerator(content, speaker, speed, pitch),
     async (result: any) => {
+      console.log(result);
       if (result.reason === ResultReason.SynthesizingAudioCompleted) {
         const audioData = result.audioData; // ArrayBuffer format
 
@@ -45,6 +46,7 @@ export const TextToSpeech = (
           const chunkString = Array.from(chunkArray).join(',');
           // Deliver the sharded data to unity.
           unityContext.send('AudioPlayer', 'ReceiveChunk', chunkString);
+          console.log('send')
         }
         // Mark as completed.
         setTimeout(() => {

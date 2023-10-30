@@ -1,47 +1,12 @@
-// import { Footer } from '@/components';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {
-  AlipayCircleOutlined,
-  LockOutlined,
-  // MobileOutlined,
-  TaobaoCircleOutlined,
-  UserOutlined,
-  WeiboCircleOutlined,
-} from '@ant-design/icons';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { Helmet, history, useModel } from '@umijs/max';
-import { Alert, Tabs, message } from 'antd';
-import axios from 'axios';
+import { history, useModel } from '@umijs/max';
+import { Alert, Tabs, message, Form } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
-import Settings from '../../../../config/defaultSettings';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ActionIcons = () => {
-  const langClassName = useEmotionCss(({ token }) => {
-    return {
-      marginLeft: '8px',
-      color: 'rgba(0, 0, 0, 0.2)',
-      fontSize: '24px',
-      verticalAlign: 'middle',
-      cursor: 'pointer',
-      transition: 'color 0.3s',
-      '&:hover': {
-        color: token.colorPrimaryActive,
-      },
-    };
-  });
-
-  return (
-    <>
-      <AlipayCircleOutlined key="AlipayCircleOutlined" className={langClassName} />
-      <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={langClassName} />
-      <WeiboCircleOutlined key="WeiboCircleOutlined" className={langClassName} />
-    </>
-  );
-};
-
+import axiosInstance from '../../../utils/request';
 
 const LoginMessage: React.FC<{
   content: string;
@@ -60,7 +25,7 @@ const LoginMessage: React.FC<{
 
 const Login: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<any>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -76,43 +41,13 @@ const Login: React.FC = () => {
     };
   });
 
-  const fetchUserInfo = async () => {
-    // Get user details
-    const userInfo = await initialState?.fetchUserInfo?.();
-    if (userInfo) {
-      flushSync(() => {
-        setInitialState((s) => ({
-          ...s,
-          currentUser: userInfo,
-        }));
-      });
-    }
-  };
-
-  const handleSubmit = async (values: API.LoginParams) => {
+  const handleSubmit = async (values: any) => {
     // new login method
-    const msg_token = await axios.post(
-      '/auth/login',
-      { mobile: values.username, password: values.password },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-    console.log(msg_token)
+    const msg_token = await axiosInstance.post('/auth/login', { mobile: values.username, password: values.password });
     if (msg_token.data.code === 200) {
       // user verification
       const user_token = msg_token.data.object;
-      const msg_user = await axios.post(
-        '/auth/verify',
-        { token: user_token },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      const msg_user = await axiosInstance.post('/auth/verify', { token: user_token });
 
       if (msg_user.status === 200) {
         message.success('Login Successful!');
@@ -153,20 +88,14 @@ const Login: React.FC = () => {
       message.error('Login failed, please try again!');
     }
   };
-
+  const [form] = Form.useForm();
   const handleRegister = async (values: Record<string, any>) => {
-    const msg = await axios.post(
-      '/auth/register',
-      { mobile: values.mobile, nickname: values.username_set, password: values.password_set },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
+    const msg = await axiosInstance.post('/auth/register', { nickname: 'User', mobile: values.username, password: values.password });
 
     if (msg.data.code === 200) {
       message.success("Registration successful!");
+      form.resetFields();
+      setType('account')
     } else {
       message.error("Registration failed")
     }
@@ -174,40 +103,27 @@ const Login: React.FC = () => {
   };
 
   const { status, type: loginType } = userLoginState;
-
   return (
     <div className={containerClassName}>
       <div
         style={{
           flex: '1',
-          padding: '32px 0',
+          padding: '36px 0',
         }}
       >
         <LoginForm
-          contentStyle={{
-            minWidth: 380,
-            maxWidth: '75vw',
-          }}
           logo={<img alt="logo" src="/logo2.png" />}
           title="Oasis"
-          subTitle=""
+          form={form}
           initialValues={{
             autoLogin: true,
           }}
-          // actions={[
-          //   <FormattedMessage
-          //     key="loginWith"
-          //     id="xxx"
-          //     defaultMessage="Other Login Methods"
-          //   />,
-          //   <ActionIcons key="icons" />,
-          // ]}
-
+          name='auth'
           onFinish={async (values) => {
             if (type === 'account') {
               // 当活动标签是 'account' 时调用登录函数
-              await handleSubmit(values as API.LoginParams);
-            } else if (type === 'mobile') {
+              await handleSubmit(values);
+            } else if (type === 'new') {
               // 当活动标签是 'mobile' 时调用注册函数
               await handleRegister(values);
             }
@@ -222,10 +138,15 @@ const Login: React.FC = () => {
             activeKey={type}
             onChange={setType}
             centered
+            style={{ padding: '8px' }}
             items={[
               {
                 key: 'account',
                 label: 'Login',
+              },
+              {
+                key: 'new',
+                label: 'Register',
               },
             ]}
           />
@@ -265,13 +186,24 @@ const Login: React.FC = () => {
                   },
                 ]}
               />
+              <div
+                style={{
+                  marginBottom: 24,
+                }}
+              >
+                <ProFormCheckbox noStyle name="autoLogin">Auto Login</ProFormCheckbox>
+                <a
+                  style={{
+                    float: 'right',
+                  }}
+                  onClick={() => setType('new')}
+                >
+                  Don't have account?
+                </a>
+              </div>
             </>
           )}
-
-          {status === 'error' && loginType === 'mobile' && (
-            <LoginMessage content="Email Verification Code Error!" />
-          )}
-          {type === 'mobile' && (
+          {type === 'new' && (
             <>
               {/* set uid */}
               <ProFormText
@@ -279,44 +211,24 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                name="mobile"
-                placeholder={'Please enter your phone number as the uid'}
-                rules={[
-                  {
-                    required: true,
-                    message: ("Please enter your phone number as the uid!"),
-                  },
-                  {
-                    pattern: /^1\d{10}$/,
-                    message: ("The phone number format is incorrect!"),
-                  },
-                ]}
-              />
-
-              {/* set username */}
-              <ProFormText
-                fieldProps={{
-                  size: 'large',
-                  prefix: <UserOutlined />,
-                }}
-                name="username_set"
+                name="username"
                 placeholder={'Please set your username'}
                 rules={[
                   {
                     required: true,
-                    message: ("Please set your username!"),
-                  },
+                    message: ("Please set your username"),
+                  }
                 ]}
               />
 
               {/* set password */}
-              <ProFormText
+              <ProFormText.Password
                 fieldProps={{
                   size: 'large',
-                  prefix: <LockOutlined />,
+                  prefix: <LockOutlined />
                 }}
+                name="password"
                 placeholder={'Please set your password'}
-                name="password_set"
                 rules={[
                   {
                     required: true,
@@ -324,23 +236,34 @@ const Login: React.FC = () => {
                   },
                 ]}
               />
+
+              <ProFormText.Password
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined />
+                }}
+                name="confirm"
+                dependencies={['password']}
+                // hasFeedback
+                placeholder={'Please confirm your password'}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please confirm your password!',
+                  },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('The new password that you entered do not match!'));
+                    },
+                  }),
+                ]}
+              >
+              </ProFormText.Password>
             </>
           )}
-
-          <div
-            style={{
-              marginBottom: 24,
-            }}
-          >
-            <ProFormCheckbox noStyle name="autoLogin">Remember username</ProFormCheckbox>
-            <a
-              style={{
-                float: 'right',
-              }}
-            >
-              Forgotten Password?
-            </a>
-          </div>
         </LoginForm>
       </div>
     </div>
@@ -348,3 +271,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+

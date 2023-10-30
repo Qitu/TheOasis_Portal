@@ -41,6 +41,7 @@ const CreateMetahuman = (successCallback: any) => {
       avatarid,
       speaker,
       voicesource: 'Azure',
+      status: 'offline',
       speed: 0,
       pitch: 0
     })
