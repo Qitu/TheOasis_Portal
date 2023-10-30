@@ -2,7 +2,7 @@
 import { PageContainer } from '@ant-design/pro-components';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Metahuman from '@/components/Metahuman';
-import {Button, Card, Col, Form, Input, Row, Select, Space} from 'antd';
+import {Button, Card, Col, Form, Row, Select, Space} from 'antd';
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../utils/request';
 import { categories } from './MetahumanDetail/Profile';
