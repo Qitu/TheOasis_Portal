@@ -1,7 +1,6 @@
 name: CI
 
-# en: Set the event to pull request event and push event of the master branch
-# zh: Event 设置为 master 分支的 pull request 事件和 push 事件
+# Set the event to pull request event and push event of the [main] branch
 on:
   push:
     branches: [main]
@@ -29,8 +28,7 @@ jobs:
       # - name: Lint check
       #   run: npm run lint
 
-      # en: The template does not contain test cases. If you need to use test cases, you can uncomment it
-      # zh: 初始化模板中不包含测试用例，如需使用测试用例，可取消注释
+      # The template does not contain test cases. If you need to use test cases, you can uncomment it
       # - name: Test (测试)
       #   run: npm run test
 
@@ -55,5 +53,7 @@ jobs:
           script: |
             cd TheOasis_Portal
             npm install
+            git fetch --all
+            git reset --hard origin/main 
             git pull
             pm2 reload oasis
