@@ -45,7 +45,9 @@ const Metahuman: React.FC<{
           bordered={false}
           hoverable
           cover={<img alt="metahumanImg" src={`https://models.readyplayer.me/${avatarid}.png`} />}
-          
+          onClick={() => {
+            currentUserDetails?.access === 'admin' ? '' : goToCardConfigPage()
+          }}
           actions={
             currentUserDetails?.access === 'admin'
                 ? [

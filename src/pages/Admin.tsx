@@ -35,6 +35,9 @@ const Admin: React.FC = () => {
         if(value)
           searchCond[keyname] = value;
       }
+      if(!IsAdmin()) {
+        searchCond['status'] = 'online';
+      }
       const res = await axiosInstance.post('/sys/metahuman/list', searchCond);
       if(res.data.obj instanceof Array) {
         setCards(res.data.obj);

@@ -3,7 +3,7 @@ import { request } from '@umijs/max';
 /** 获取当前的用户 GET /api/currentUser */
 export async function quryMetahuman(id: number) {
   return request<{
-    data: API.CurrentUser;
+    data: any;
   }>('/sys/metahuman/' + id, {
     method: 'GET',
     headers: {AuthToken: localStorage.getItem('AuthToken') || ''}
@@ -12,7 +12,7 @@ export async function quryMetahuman(id: number) {
 
 export async function updateMetahuman(id:number, data: any) {
     return request<{
-      data: API.CurrentUser;
+      data: any;
     }>('/sys/metahuman/' + id, {
       method: 'PUT',
       headers: {AuthToken: localStorage.getItem('AuthToken') || ''},

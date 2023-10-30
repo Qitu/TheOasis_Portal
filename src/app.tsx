@@ -26,14 +26,8 @@ export async function getInitialState(): Promise<{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fetchUserInfo = async () => {
     try {
-      // if the current user exists
-      // 从localStorage获取用户信息
       const currentUserStr = localStorage.getItem('currentUser');
       return currentUserStr ? JSON.parse(currentUserStr) : null;
-      // const msg = await queryCurrentUser({
-      //   skipErrorHandler: true,
-      // });
-      // return msg.data;
     } catch (error) {
       console.log(error);
       history.push(loginPath);
@@ -57,14 +51,13 @@ export async function getInitialState(): Promise<{
   };
 }
 
-// ProLayout 支持的api https://procomponents.ant.design/components/layout
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
   return {
     actionsRender: () => [],
     avatarProps: {
       src: '/logo2.png',
-      title: initialState?.currentUser.access == 'admin' ? 'Admin' : 'User',
+      title: initialState?.currentUser?.access == 'admin' ? 'Admin' : 'User',
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
