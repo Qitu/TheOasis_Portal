@@ -13,16 +13,16 @@ export default {
   dev: {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
     '/sys/': {
-      target: 'http://adf5c6a6f68364605be5b9ed98cdfb01-158327126.us-east-2.elb.amazonaws.com:8081',
+      target: 'http://a24931d819fe74448b02d3dd2481a887-770005320.ap-southeast-1.elb.amazonaws.com:8081',
       changeOrigin: true,
     },
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
     '/api/': {
-      target: 'http://adf5c6a6f68364605be5b9ed98cdfb01-158327126.us-east-2.elb.amazonaws.com:8081',
+      target: 'http://a24931d819fe74448b02d3dd2481a887-770005320.ap-southeast-1.elb.amazonaws.com:8081',
       changeOrigin: true,
     },
     '/auth/': {
-      target: 'http://aa0ed728754314f40ab4b5ddbe1e446b-756602400.us-east-2.elb.amazonaws.com:8080',
+      target: 'http://afe79c5d053cc40ad97eae0351ec865a-1730116590.ap-southeast-1.elb.amazonaws.com:8080',
       changeOrigin: true,
     },
   },
