@@ -15,7 +15,7 @@ export default {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
     '/sys/': {
       // 要代理的地址
-      target: 'http://a9f421f104e8a437b9bdcb76b4738abb-886494035.us-east-2.elb.amazonaws.com:8081',
+      target: 'http://adf5c6a6f68364605be5b9ed98cdfb01-158327126.us-east-2.elb.amazonaws.com:8081',
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
@@ -23,14 +23,14 @@ export default {
     // localhost:8000/api/** -> https://preview.pro.ant.design/api/**
     '/api/': {
       // 要代理的地址
-      target: 'http://a9f421f104e8a437b9bdcb76b4738abb-886494035.us-east-2.elb.amazonaws.com:8081',
+      target: 'http://adf5c6a6f68364605be5b9ed98cdfb01-158327126.us-east-2.elb.amazonaws.com:8081',
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
     },
     '/auth/': {
       // 要代理的地址
-      target: 'http://ab1deeaaa898a495da8038591e594995-1282361895.us-east-2.elb.amazonaws.com:8080',
+      target: 'http://aa0ed728754314f40ab4b5ddbe1e446b-756602400.us-east-2.elb.amazonaws.com:8080',
       // 配置了这个可以从 http 代理到 https
       // 依赖 origin 的功能可能需要这个，比如 cookie
       changeOrigin: true,
