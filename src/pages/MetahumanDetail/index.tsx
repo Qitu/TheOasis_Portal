@@ -1,19 +1,25 @@
-import { LeftOutlined, MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { TabsProps } from 'antd';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Button, Descriptions, Image, Space, Tabs, Typography } from 'antd';
-import advancedContent from './AdvancedContent';
-import basicContent from './BasicContent';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { parseInt } from 'lodash';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { quryMetahuman } from './api';
+import { MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons'
+import type { TabsProps } from 'antd'
+import { Button, Image, Space, Tabs, Typography, message, Modal } from 'antd'
+import advancedContent from './AdvancedContent'
+import basicContent from './BasicContent'
+import Profile from './Profile'
+import { quryMetahuman, updateMetahuman } from './api'
 import styles from './index.less';
+import { useEffect, useState  } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { parseInt, cloneDeep } from 'lodash'
+import { AvatarCreator, AvatarCreatorConfig } from '@readyplayerme/react-avatar-creator';
 
-const { Link } = Typography;
+const config: AvatarCreatorConfig = {
+  clearCache: true,
+  bodyType: 'fullbody',
+  quickStart: false,
+  language: 'en',
+};
 
+const { Link, Paragraph } = Typography;
+  
 // interface VoiceRecorderProps {
 //     id: number // Metahuman ID
 // }
@@ -21,11 +27,16 @@ const { Link } = Typography;
 function MetahumanDetail() {
   const [metahuman, setMetahuman] = useState<any>({});
   const [descs, setDescs] = useState<any>([]);
+  const [saving, setSaving] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showIMG, setShowIMG] = useState(true);
+
+  const [messageApi, contextHolder] = message.useMessage();
 
   const getMetahumanDetail = async (id: string) => {
-    const data: any = await quryMetahuman(parseInt(id));
-
+    const data:any = await quryMetahuman(parseInt(id));
     if (data.code === 200) {
+      data.object.status = data.object.status == 'online' ? true : false;
       setMetahuman({
         ...data.object,
       });
@@ -50,25 +61,57 @@ function MetahumanDetail() {
           label: 'Last update',
           children: data.object.updateTime,
         },
-      ]);
-
-      console.log(data.object);
+      ])
     } else {
+      navigate('/404')
       console.log(data.message);
     }
   };
 
+  const updateMetahumanDetail = async () => {
+    if(!param.id) return;
+    const updateData = cloneDeep(metahuman)
+    updateData.status = updateData.status ? 'online' : 'offline'
+    setSaving(true)
+    await updateMetahuman(parseInt(param.id), updateData)
+    messageApi.open({
+      type: 'success',
+      content: 'Updates saved.',
+    });
+    setSaving(false)
+  };
+
+
+  const handleOnAvatarExported = (event: any) => {
+    setIsModalOpen(false)
+    console.log(event.data)
+    setProperty('avatarid', event.data.avatarId)
+    setShowIMG(false)
+    setTimeout(() => {
+      setShowIMG(true)
+    }, 100);
+  };
+
   const param = useParams<any>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMetahumanDetail(param.id || '');
   }, [name]);
 
+  const setProperty = (keyName:string, value:any) => {
+    const newParam = {
+      ...metahuman
+    }
+    newParam[keyName] = value
+    setMetahuman(newParam)
+  }
+
   const tabItems: TabsProps['items'] = [
     {
       key: '1',
       label: 'Basic',
-      children: basicContent(metahuman),
+      children: metahuman.name ? basicContent(metahuman, setProperty) : '',
     },
     {
       key: '2',
@@ -77,49 +120,86 @@ function MetahumanDetail() {
     },
   ];
 
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(`${window.location.hostname}/conversation/${param.id}`);
+      messageApi.open({
+        type: 'success',
+        content: 'Share link copied!',
+      });
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
   return (
     <div>
-      <div style={{ margin: '10px 10px 0' }}>
-        <Button
-          type="link"
-          style={{ background: 'none' }}
-          size={'large'}
-          shape="circle"
-          icon={<LeftOutlined />}
-        />
-      </div>
       <div className={styles.flexbox}>
         {/* Avatar */}
-        <div style={{ margin: '0 20px' }}>
-          <Image
-            width={100}
-            style={{ borderRadius: '5px' }}
-            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-          />
-          {/* <Avatar shape="square" size={80} icon={<RedoOutlined />} /> */}
+        <div style={{ marginRight: '26px' }}>
+          {
+            showIMG ? 
+              <Image
+                width={100}
+                style={{ borderRadius: '5px', border: '1px solid rgba(0,0,0,0.1)', boxShadow: '1px 2px 5px rgba(0,0,0,0.1)' }}
+                src={`https://models.readyplayer.me/${metahuman.avatarid}.png`}
+              />
+            : ''
+          }
+          
         </div>
         {/* Name & Description */}
-        <div style={{}}>
-          <div className={styles.title}>{metahuman.name}</div>
-          <div className={styles.subtitle}>{metahuman.subname || '-'}</div>
-          <Link
-            href="https://ant.design"
-            target="_blank"
-            style={{ position: 'relative', top: '23px' }}
+        <div>
+          <Paragraph 
+            className={styles.title}
+            editable={{
+              onChange: (value) => setProperty('name', value),
+              text: metahuman.name,
+            }}
           >
-            Edit image
+            { metahuman.name }
+          </Paragraph>
+          <Paragraph 
+            className={styles.subtitle}
+            editable={{
+              onChange: (value) => setProperty('subname', value),
+              text: metahuman.subname,
+            }}
+          >
+            { metahuman.subname || '-' }
+          </Paragraph>
+          <Link
+            target="_blank"
+            style={{ position: 'relative', top: '5px' }}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Edit Avatar
           </Link>
+          <Modal 
+            centered 
+            width="75%" 
+            title="Edit Avatar" 
+            open={isModalOpen} 
+            maskClosable={false}
+            footer={null}
+            onCancel={() => setIsModalOpen(false)}
+          >
+            <AvatarCreator 
+              subdomain="aiaustin" 
+              // subdomain="demo" 
+              config={config} 
+              style={{ width: '100%', height: '520px', border: 'none' }} 
+              onAvatarExported={handleOnAvatarExported} 
+            />
+          </Modal>
         </div>
         {/* Action Buttons */}
         <div style={{ flex: 1, textAlign: 'right', paddingTop: '15px' }}>
           <Space>
-            <Button shape="round" icon={<ShareAltOutlined />}>
+            <Button shape="round" icon={<ShareAltOutlined />} onClick={() => copyLink()}>
               Share
             </Button>
-            <Button shape="round" icon={<MessageOutlined />}>
-              Chat
-            </Button>
-            <Button type="primary" shape="round" icon={<SaveOutlined />}>
+            <Button loading={saving} type="primary" shape="round" icon={<SaveOutlined />} onClick={() => updateMetahumanDetail()}>
               Save
             </Button>
           </Space>
@@ -127,10 +207,12 @@ function MetahumanDetail() {
       </div>
 
       {/* Metahuman Profile */}
-      <Descriptions style={{ padding: '15px 20px' }} layout="vertical" column={4} items={descs} />
-
+      {metahuman.name ? Profile(metahuman, setProperty): ''}
+      
       {/* Metahuman Personality */}
       <Tabs defaultActiveKey="1" items={tabItems} tabBarStyle={{ padding: '0 20px' }} />
+
+      {contextHolder}
     </div>
   );
 }

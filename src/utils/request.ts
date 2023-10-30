@@ -13,7 +13,6 @@ instance.interceptors.request.use(
     // 在发送请求之前做些什么，例如设置token
     config.headers = config.headers || {};
     config.headers.AuthToken = localStorage.getItem('userToken') || '';
-    console.log(config)
     return config;
   },
   (error) => {

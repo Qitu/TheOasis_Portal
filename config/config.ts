@@ -79,7 +79,7 @@ export default defineConfig({
    * @name layout 插件
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: 'Ant Design Pro',
+  title: 'Oasis',
   layout: {
     locale: true,
     ...defaultSettings,
@@ -97,12 +97,12 @@ export default defineConfig({
    * @name 国际化插件
    * @doc https://umijs.org/docs/max/i18n
    */
-  locale: {
-    default: 'en-US',
-    antd: true,
-    // default true, when it is true, will use `navigator.language` overwrite default
-    // baseNavigator: true,
-  },
+  // locale: {
+  //   default: 'en-US',
+  //   antd: true,
+  //   // default true, when it is true, will use `navigator.language` overwrite default
+  //   // baseNavigator: true,
+  // },
   /**
    * @name antd 插件
    * @description 内置了 babel import 插件

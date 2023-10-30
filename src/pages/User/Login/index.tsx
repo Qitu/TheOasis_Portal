@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import { LoginForm, ProFormCheckbox, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { FormattedMessage, Helmet, SelectLang, history, useIntl, useModel } from '@umijs/max';
+import { Helmet, history, useModel } from '@umijs/max';
 import { Alert, Tabs, message } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react';
@@ -42,27 +42,6 @@ const ActionIcons = () => {
   );
 };
 
-const Lang = () => {
-  const langClassName = useEmotionCss(({ token }) => {
-    return {
-      width: 42,
-      height: 42,
-      lineHeight: '42px',
-      position: 'fixed',
-      right: 16,
-      borderRadius: token.borderRadius,
-      ':hover': {
-        backgroundColor: token.colorBgTextHover,
-      },
-    };
-  });
-
-  return (
-    <div className={langClassName} data-lang>
-      {SelectLang && <SelectLang />}
-    </div>
-  );
-};
 
 const LoginMessage: React.FC<{
   content: string;
@@ -97,9 +76,6 @@ const Login: React.FC = () => {
     };
   });
 
-  const intl = useIntl();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fetchUserInfo = async () => {
     // Get user details
     const userInfo = await initialState?.fetchUserInfo?.();
@@ -124,8 +100,8 @@ const Login: React.FC = () => {
         },
       },
     );
-
-    if (msg_token.data.message === 'SUCCESS') {
+    console.log(msg_token)
+    if (msg_token.data.code === 200) {
       // user verification
       const user_token = msg_token.data.object;
       const msg_user = await axios.post(
@@ -139,11 +115,7 @@ const Login: React.FC = () => {
       );
 
       if (msg_user.status === 200) {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'xxx',
-          defaultMessage: 'Login Successful!',
-        });
-        message.success(defaultLoginSuccessMessage);
+        message.success('Login Successful!');
 
         // get user details
         const user_obj = msg_user.data;
@@ -178,43 +150,8 @@ const Login: React.FC = () => {
         return;
       }
     } else {
-      const defaultLoginFailureMessage = intl.formatMessage({
-        id: 'xxx',
-        defaultMessage: 'Login failed, please try again!',
-      });
-      message.error(defaultLoginFailureMessage);
+      message.error('Login failed, please try again!');
     }
-
-    // old login method
-    // try {
-    //   // 登录
-    //   const msg = await login({ ...values, type });
-    //
-    //   if (msg.status === 'ok') {
-    //     const defaultLoginSuccessMessage = intl.formatMessage({
-    //       id: 'xxx',
-    //       defaultMessage: 'Login Successful!',
-    //     });
-    //     message.success(defaultLoginSuccessMessage);
-    //     await fetchUserInfo();
-    //     // if the current url have "redirect"
-    //     const urlParams = new URL(window.location.href).searchParams;
-    //     // admin or user
-    //     history.push(urlParams.get('redirect') || '/');
-    //     return;
-    //   }
-    //
-    //   console.log(msg);
-    //   // 如果失败去设置用户错误信息
-    //   setUserLoginState(msg);
-    // } catch (error) {
-    //   const defaultLoginFailureMessage = intl.formatMessage({
-    //     id: 'xxx',
-    //     defaultMessage: 'Login failed, please try again!',
-    //   });
-    //   console.log(error);
-    //   message.error(defaultLoginFailureMessage);
-    // }
   };
 
   const handleRegister = async (values: Record<string, any>) => {
@@ -240,16 +177,6 @@ const Login: React.FC = () => {
 
   return (
     <div className={containerClassName}>
-      <Helmet>
-        <title>
-          {intl.formatMessage({
-            id: 'xxx',
-            defaultMessage: 'Login Page ',
-          })}
-          - {Settings.title}
-        </title>
-      </Helmet>
-      <Lang />
       <div
         style={{
           flex: '1',
@@ -261,8 +188,8 @@ const Login: React.FC = () => {
             minWidth: 380,
             maxWidth: '75vw',
           }}
-          logo={<img alt="logo" src="/logo.svg" />}
-          title="Oasis: A MetaHuman Platform"
+          logo={<img alt="logo" src="/logo2.png" />}
+          title="Oasis"
           subTitle=""
           initialValues={{
             autoLogin: true,
@@ -298,27 +225,14 @@ const Login: React.FC = () => {
             items={[
               {
                 key: 'account',
-                label: intl.formatMessage({
-                  id: 'x',
-                  defaultMessage: 'Login via Uid and Password',
-                }),
-              },
-              {
-                key: 'mobile',
-                label: intl.formatMessage({
-                  id: 'xxx',
-                  defaultMessage: 'Register',
-                }),
+                label: 'Login',
               },
             ]}
           />
 
           {status === 'error' && loginType === 'account' && (
             <LoginMessage
-              content={intl.formatMessage({
-                id: 'x',
-                defaultMessage: 'Incorrect uid or password',
-              })}
+              content={'Incorrect username or password'}
             />
           )}
           {type === 'account' && (
@@ -329,14 +243,11 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <UserOutlined />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'x',
-                  defaultMessage: 'Please enter your uid',
-                })}
+                placeholder={'Please enter your username'}
                 rules={[
                   {
                     required: true,
-                    message: <FormattedMessage id="x" defaultMessage="Please enter your uid!" />,
+                    message: "Please enter your username!",
                   },
                 ]}
               />
@@ -346,16 +257,11 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'x',
-                  defaultMessage: 'Please enter your password',
-                })}
+                placeholder={'Please enter your password'}
                 rules={[
                   {
                     required: true,
-                    message: (
-                      <FormattedMessage id="x" defaultMessage="Please enter your password!" />
-                    ),
+                    message: "Please enter your password!",
                   },
                 ]}
               />
@@ -374,28 +280,15 @@ const Login: React.FC = () => {
                   prefix: <UserOutlined />,
                 }}
                 name="mobile"
-                placeholder={intl.formatMessage({
-                  id: 'xxx',
-                  defaultMessage: 'Please enter your phone number as the uid',
-                })}
+                placeholder={'Please enter your phone number as the uid'}
                 rules={[
                   {
                     required: true,
-                    message: (
-                      <FormattedMessage
-                        id="xxx"
-                        defaultMessage="Please enter your phone number as the uid!"
-                      />
-                    ),
+                    message: ("Please enter your phone number as the uid!"),
                   },
                   {
                     pattern: /^1\d{10}$/,
-                    message: (
-                      <FormattedMessage
-                        id="x"
-                        defaultMessage="The phone number format is incorrect!"
-                      />
-                    ),
+                    message: ("The phone number format is incorrect!"),
                   },
                 ]}
               />
@@ -407,16 +300,11 @@ const Login: React.FC = () => {
                   prefix: <UserOutlined />,
                 }}
                 name="username_set"
-                placeholder={intl.formatMessage({
-                  id: 'xxx',
-                  defaultMessage: 'Please set your username',
-                })}
+                placeholder={'Please set your username'}
                 rules={[
                   {
                     required: true,
-                    message: (
-                      <FormattedMessage id="xxx" defaultMessage="Please set your username!" />
-                    ),
+                    message: ("Please set your username!"),
                   },
                 ]}
               />
@@ -427,17 +315,12 @@ const Login: React.FC = () => {
                   size: 'large',
                   prefix: <LockOutlined />,
                 }}
-                placeholder={intl.formatMessage({
-                  id: 'xxx',
-                  defaultMessage: 'Please set your password',
-                })}
+                placeholder={'Please set your password'}
                 name="password_set"
                 rules={[
                   {
                     required: true,
-                    message: (
-                      <FormattedMessage id="xxx" defaultMessage="Please set your password!" />
-                    ),
+                    message: ("Please set your password!"),
                   },
                 ]}
               />
@@ -449,15 +332,13 @@ const Login: React.FC = () => {
               marginBottom: 24,
             }}
           >
-            <ProFormCheckbox noStyle name="autoLogin">
-              <FormattedMessage id="xxx" defaultMessage="Auto-login" />
-            </ProFormCheckbox>
+            <ProFormCheckbox noStyle name="autoLogin">Remember username</ProFormCheckbox>
             <a
               style={{
                 float: 'right',
               }}
             >
-              <FormattedMessage id="xxx" defaultMessage="Forgotten Password?" />
+              Forgotten Password?
             </a>
           </div>
         </LoginForm>
