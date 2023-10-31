@@ -1,5 +1,6 @@
 import {
   DeleteOutlined,
+  LinkOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
 import { history, useModel } from '@umijs/max';
@@ -31,6 +32,15 @@ const Metahuman: React.FC<{
     });
   };
 
+  const startConversation = () => {
+    history.push(`conversation/${id}`, {
+      id: id,
+      name: name,
+      description: description,
+      avatarid: avatarid,
+    });
+  }
+
   const handleDelete = async (id: number) => {
     const deleteRes = await axiosInstance.delete('/sys/metahuman/' + id)
     if(deleteRes.data && deleteRes.data.code === 200) {
@@ -51,6 +61,10 @@ const Metahuman: React.FC<{
           actions={
             currentUserDetails?.access === 'admin'
                 ? [
+                    <div onClick={startConversation} >
+                      <LinkOutlined style={{ marginRight: '10px' }}/>
+                    </div>
+                    ,
                     <div onClick={goToCardConfigPage} >
                       <SettingOutlined style={{ marginRight: '10px' }}/>
                     </div>
