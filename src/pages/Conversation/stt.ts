@@ -13,7 +13,11 @@ const speechConfig = SpeechConfig.fromSubscription(identityKey, region);
 
 // Customize detection settings
 speechConfig.speechRecognitionLanguage = 'en-US';
-// navigator.mediaDevices.getUserMedia({ audio: true }) // Disabled for lower performance cost
+try{
+  navigator.mediaDevices.getUserMedia({ audio: true }) // Disabled for lower performance cost
+} catch(e) {
+
+}
 let audioConfig = AudioConfig.fromDefaultMicrophoneInput();
 
 export function SpeechToText(setRecording: any, setResultText: any) {
