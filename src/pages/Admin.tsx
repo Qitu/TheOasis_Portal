@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {Button, Card, Col, Form, Row, Select, Space} from 'antd';
+import {Button, Card, Col, Form, Row, Select, Space, Spin} from 'antd';
 import Metahuman from '@/components/Metahuman';
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../utils/request';
@@ -13,6 +13,10 @@ const Admin: React.FC = () => {
   let [cards, setCards] = useState(
     [] as { mid: number; name: string; subname: string; avatarid: string; status: string }[],
   );
+
+  let [loading, setLoading] = useState(true);
+
+  
 
   let [condition, setCondition] = useState({});
   const { initialState, setInitialState } = useModel('@@initialState');
@@ -45,6 +49,7 @@ const Admin: React.FC = () => {
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -84,25 +89,29 @@ const Admin: React.FC = () => {
           </Space>
         </Form>
       </Card>
-
-      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-        {' '}
-        {/* 使用 Row 和 Col 来布局卡片，gutter 设置卡片之间的间距 */}
-        {cards.map((card, index) => (
-          <Col lg={6} xs={24} sm={12} md={8}  key={index}>
-            {' '}
-            {/* 每行显示三个卡片，所以设置 Col 的 span 为 8 */}
-            <Metahuman
-              id={card.mid}
-              name={card.name}
-              description={card.subname}
-              avatarid={card.avatarid}
-              status={card.status}
-              deleteCallback={queryList}
-            />
-          </Col>
-        ))}
-      </Row>
+      
+      {
+        loading ? 
+          <Spin tip="Loading..." size={'large'} style={{ width: '100%', textAlign: 'center', margin: '80px 0'}} />
+        :
+          <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+            {/* 使用 Row 和 Col 来布局卡片，gutter 设置卡片之间的间距 */}
+            {cards.map((card, index) => (
+              <Col lg={6} xs={24} sm={12} md={8}  key={index}>
+                {/* 每行显示三个卡片，所以设置 Col 的 span 为 8 */}
+                <Metahuman
+                  id={card.mid}
+                  name={card.name}
+                  description={card.subname}
+                  avatarid={card.avatarid}
+                  status={card.status}
+                  deleteCallback={queryList}
+                />
+              </Col>
+            ))}
+          </Row>
+      }
+      
     </div>
   );
 };

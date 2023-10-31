@@ -1,6 +1,6 @@
 import { MessageOutlined, SaveOutlined, ShareAltOutlined } from '@ant-design/icons'
 import type { TabsProps } from 'antd'
-import { Button, Image, Space, Tabs, Typography, message, Modal } from 'antd'
+import { Button, Image, Space, Tabs, Typography, message, Modal, Spin } from 'antd'
 import advancedContent from './AdvancedContent'
 import basicContent from './BasicContent'
 import Profile from './Profile'
@@ -30,6 +30,8 @@ function MetahumanDetail() {
   const [saving, setSaving] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showIMG, setShowIMG] = useState(true);
+  const [loading, setLoading] = useState(true);
+
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -62,6 +64,7 @@ function MetahumanDetail() {
           children: data.object.updateTime,
         },
       ])
+      setLoading(false)
     } else {
       navigate('/404')
       console.log(data.message);
@@ -84,7 +87,6 @@ function MetahumanDetail() {
 
   const handleOnAvatarExported = (event: any) => {
     setIsModalOpen(false)
-    console.log(event.data)
     setProperty('avatarid', event.data.avatarId)
     setShowIMG(false)
     setTimeout(() => {
@@ -133,6 +135,9 @@ function MetahumanDetail() {
   }
 
   return (
+    loading ? 
+      <Spin tip="Loading..." size={'large'} style={{ width: '100%', textAlign: 'center', margin: '80px 0'}} />
+    :
     <div>
       <div className={styles.flexbox}>
         {/* Avatar */}

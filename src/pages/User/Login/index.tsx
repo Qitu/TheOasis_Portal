@@ -76,12 +76,7 @@ const Login: React.FC = () => {
 
         // if the current url have "redirect"
         const urlParams = new URL(window.location.href).searchParams;
-        // admin or user
-        if (user_obj.identity === 'admin') {
-          history.push(urlParams.get('redirect') || '/admin');
-        } else {
-          history.push(urlParams.get('redirect') || '/');
-        }
+        history.push(urlParams.get('redirect') || '/');
         return;
       }
     } else {
