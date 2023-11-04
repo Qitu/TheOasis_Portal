@@ -125,7 +125,7 @@ const Login: React.FC = () => {
           }}
           submitter={{
             searchConfig: {
-              submitText: type === 'account' ? 'Login' : 'Register', // 根据活动标签动态设置按钮文本
+              submitText: type === 'account' ? '- Login -' : 'Register', // 根据活动标签动态设置按钮文本
             },
           }}
         >

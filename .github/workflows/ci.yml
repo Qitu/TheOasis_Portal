@@ -28,9 +28,8 @@ jobs:
       # - name: Lint check
       #   run: npm run lint
 
-      # The template does not contain test cases. If you need to use test cases, you can uncomment it
-      # - name: Test (测试)
-      #   run: npm run test
+      - name: Test
+        run: npm run test
 
       - name: Project Build
         run: npm run build
