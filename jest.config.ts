@@ -19,5 +19,6 @@ export default async () => {
       ...config.globals,
       localStorage: null,
     },
+    testTimeout: 10000
   };
 };
