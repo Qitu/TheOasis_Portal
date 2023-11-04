@@ -3,14 +3,6 @@ import { act, fireEvent, render } from '@testing-library/react';
 import { TestBrowser } from '@@/testBrowser'; // 根据实际路径进行导入
 import { startMock } from '@@/requestRecordMock'; // 根据实际路径进行导入
 
-const waitTime = (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
-
 let server: {
   close: () => void;
 };
@@ -51,6 +43,6 @@ describe('Login Page', () => {
 
     expect(rootContainer.asFragment()).toMatchSnapshot();
 
-    rootContainer.unmount();
+    await rootContainer.unmount();
   });
 });
