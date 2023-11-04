@@ -43,6 +43,6 @@ describe('Login Page', () => {
 
     expect(rootContainer.asFragment()).toMatchSnapshot();
 
-    await rootContainer.unmount();
+    rootContainer.unmount();
   });
 });
